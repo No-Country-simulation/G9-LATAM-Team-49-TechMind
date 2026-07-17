@@ -216,3 +216,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Modelos serializados (se almacenan en OCI Object Storage)
+*.joblib
+*.pkl
