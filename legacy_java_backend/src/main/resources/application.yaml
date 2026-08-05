@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: techmind-backend
+
+server:
+  port: ${PORT:8080}
