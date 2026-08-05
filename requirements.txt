@@ -10,3 +10,9 @@ numpy>=1.24.3
 pandas>=2.0.3
 chromadb>=0.4.15
 scikit-learn>=1.3.0
+matplotlib
+seaborn
+requests
+langdetect>=1.0.9
+yake
+beautifulsoup4
