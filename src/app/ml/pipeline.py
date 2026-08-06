@@ -1244,7 +1244,7 @@ def run_eda_and_training():
     # Contadores de diagnóstico del scraping, consultados en §2.3.4.
     ESTADO_SCRAPING = {"ok": 0, "vacios": 0, "inexistentes": 0, "bloqueados": 0,
                        "limitados": 0, "errores": 0, "robots": 0, "sin_ssr": 0,
-                       "extractor": 0}
+                       "extractor": 0, "irrecuperables": 0}
 
     def _con_jitter(segundos: float, cfg: Config = CFG) -> float:
         """Añade una perturbación aleatoria a un tiempo de espera.
@@ -1895,7 +1895,12 @@ def run_eda_and_training():
         if vacias:
             log.error(f"Categorías sin ningún documento: {vacias}")
             print(f"\n  ATENCIÓN: {len(vacias)} categoría(s) sin documentos: {vacias}")
-            if ESTADO_SCRAPING["extractor"]:
+            if ESTADO_SCRAPING["irrecuperables"]:
+                print(f"  Causa: {ESTADO_SCRAPING['irrecuperables']} URL(s) con fallo")
+                print("  DETERMINISTA (bucle de redirección, URL malformada). No se")
+                print("  reintentan porque el resultado sería idéntico. Revisa el log:")
+                print("  indica qué hacer con cada una.")
+            elif ESTADO_SCRAPING["extractor"]:
                 print(f"  Causa: {ESTADO_SCRAPING['extractor']} fila(s) hicieron fallar al")
                 print("  extractor. NO es un problema de red: revisa el esquema del CSV")
                 print("  (§2.3.1 lo valida al cargarlo) y el log para ver qué falta.")
@@ -4992,7 +4997,7 @@ class TechMindInference:
     def _clasificar(self, texto_limpio: str, texto_pos: str) -> tuple:
         """Devuelve (vector, distribución de probabilidad) según el tipo de clasificador."""
         vector = self._codificar([texto_limpio])
-        if self.tipo_clasificador == "sbert+logreg":
+        if self.tipo_clasificador.startswith("sbert+logreg"):
             probas = self.clf.predict_proba(vector)[0]
         else:
             probas = self.clf.predict_proba([texto_pos])[0]

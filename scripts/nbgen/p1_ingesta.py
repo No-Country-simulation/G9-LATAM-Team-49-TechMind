@@ -844,7 +844,27 @@ SESION.headers.update(HEADERS)
 # Contadores de diagnóstico del scraping, consultados en §2.3.4.
 ESTADO_SCRAPING = {"ok": 0, "vacios": 0, "inexistentes": 0, "bloqueados": 0,
                    "limitados": 0, "errores": 0, "robots": 0, "sin_ssr": 0,
-                   "extractor": 0}
+                   "extractor": 0, "irrecuperables": 0}
+
+# Excepciones que NO tiene sentido reintentar: el resultado será idéntico.
+NO_REINTENTABLES = (
+    requests.exceptions.TooManyRedirects,   # bucle de redirección del servidor
+    requests.exceptions.MissingSchema,      # URL sin http:// o https://
+    requests.exceptions.InvalidURL,
+    requests.exceptions.InvalidSchema,
+    requests.exceptions.URLRequired,
+)
+
+_PISTA_IRRECUPERABLE = {
+    "TooManyRedirects":
+        "El servidor entra en bucle de redirección, normalmente por negociación "
+        "de idioma o cookies. Abre la URL en el navegador, copia la dirección "
+        "final a la que llega y ponla en el CSV.",
+    "MissingSchema":  "Falta el esquema: la URL debe empezar por https://.",
+    "InvalidURL":     "La URL está malformada; revisa esa fila del CSV.",
+    "InvalidSchema":  "Esquema no soportado (¿ftp://, file://?).",
+    "URLRequired":    "La fila no trae URL.",
+}
 
 def _con_jitter(segundos: float, cfg: Config = CFG) -> float:
     """Añade una perturbación aleatoria a un tiempo de espera.
@@ -961,6 +981,16 @@ def _descargar(url: str, cfg: Config = CFG) -> str:
             r.raise_for_status()
             r.encoding = r.apparent_encoding or "utf-8"
             return r.text
+
+        except NO_REINTENTABLES as exc:
+            # Bucles de redirección, URLs malformadas o fallos de certificado son
+            # DETERMINISTAS: dependen de la configuración del servidor o de la
+            # propia URL, no del estado de la red. Reintentarlos gasta seis
+            # peticiones y llena el log de ruido que oculta la causa real.
+            ESTADO_SCRAPING["irrecuperables"] += 1
+            log.error(f"{type(exc).__name__} en {url}: no se reintenta porque el "
+                      f"fallo es determinista. {_PISTA_IRRECUPERABLE.get(type(exc).__name__, '')}")
+            return ""
 
         except requests.exceptions.RequestException as exc:
             espera = _con_jitter(cfg.corpus.backoff_base ** (intento + 1))
@@ -1549,7 +1579,12 @@ if not CFG.corpus.usar_fallback:
     if vacias:
         log.error(f"Categorías sin ningún documento: {vacias}")
         print(f"\n  ATENCIÓN: {len(vacias)} categoría(s) sin documentos: {vacias}")
-        if ESTADO_SCRAPING["extractor"]:
+        if ESTADO_SCRAPING["irrecuperables"]:
+            print(f"  Causa: {ESTADO_SCRAPING['irrecuperables']} URL(s) con fallo")
+            print("  DETERMINISTA (bucle de redirección, URL malformada). No se")
+            print("  reintentan porque el resultado sería idéntico. Revisa el log:")
+            print("  indica qué hacer con cada una.")
+        elif ESTADO_SCRAPING["extractor"]:
             print(f"  Causa: {ESTADO_SCRAPING['extractor']} fila(s) hicieron fallar al")
             print("  extractor. NO es un problema de red: revisa el esquema del CSV")
             print("  (§2.3.1 lo valida al cargarlo) y el log para ver qué falta.")

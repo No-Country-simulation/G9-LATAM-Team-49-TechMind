@@ -1101,6 +1101,19 @@ if CFG.clasificacion.calibrar_probabilidades and MIN_POR_CLASE >= 3:
           f"≈{CFG.clasificacion.umbral_confianza_baja * n_cl:.1f}x el azar.")
 else:
     print("Calibración omitida (desactivada o categorías con menos de 3 documentos).")
+
+# ── Modelo que realmente se sirve ────────────────────────────────────────────
+# A partir de aquí NADIE vuelve a escribir `modelo_b if GANADOR == "B" else modelo_a`.
+# Un solo nombre canónico evita que la calibración se quede en la tabla de métricas
+# y nunca llegue ni al artefacto serializado ni al servicio de inferencia.
+MODELO_SERVIDO = MODELO_CALIBRADO if MODELO_CALIBRADO is not None else (
+    modelo_b if GANADOR == "B" else modelo_a)
+CALIBRACION_APLICADA = MODELO_CALIBRADO is not None
+TIPO_CLASIFICADOR = ("sbert+logreg" if GANADOR == "B" else "tfidf+logreg") + (
+    f"+calibrado({CFG.clasificacion.metodo_calibracion})" if CALIBRACION_APLICADA else "")
+
+print(f"\n  MODELO_SERVIDO -> {TIPO_CLASIFICADOR}")
+print(f"  Este es el objeto que se serializa en 5.7 y el que responde en /contenido.")
 ''')
 
 code(r'''
@@ -1785,11 +1798,9 @@ def serializar_artefactos(cfg: Config = CFG) -> dict:
     artefactos: dict = {}
     destino = cfg.rutas.models
 
-    # 1 — Clasificador ganador
-    modelo_final = modelo_b if GANADOR == "B" else modelo_a
-    tipo_clf = "sbert+logreg" if GANADOR == "B" else "tfidf+logreg"
-    joblib.dump(modelo_final, destino / "modelo_clasificacion.joblib")
-    artefactos["modelo_clasificacion.joblib"] = f"Clasificador temático ({tipo_clf})"
+    # 1 — Clasificador servido (ganador, ya calibrado si la calibración se adoptó)
+    joblib.dump(MODELO_SERVIDO, destino / "modelo_clasificacion.joblib")
+    artefactos["modelo_clasificacion.joblib"] = f"Clasificador temático ({TIPO_CLASIFICADOR})"
 
     # 2 — Codificador de etiquetas
     joblib.dump(le, destino / "label_encoder.joblib")
@@ -1825,7 +1836,8 @@ def serializar_artefactos(cfg: Config = CFG) -> dict:
         "fecha_entrenamiento": pd.Timestamp.now().isoformat(),
 
         "modelo": {
-            "tipo_clasificador": tipo_clf,
+            "tipo_clasificador": TIPO_CLASIFICADOR,
+            "calibracion_aplicada": CALIBRACION_APLICADA,
             "representacion": "embeddings SBERT" if GANADOR == "B" else "TF-IDF sobre lemas POS",
             "modelo_embeddings": cfg.embeddings.modelo,
             "dimension_embeddings": int(embeddings.shape[1]),

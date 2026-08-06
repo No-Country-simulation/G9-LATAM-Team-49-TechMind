@@ -587,7 +587,7 @@ def poblar_sqlite(con: sqlite3.Connection, df: pd.DataFrame,
          for _, r in df.iterrows()],
     )
 
-    tipo_clf = "sbert+logreg" if GANADOR == "B" else "tfidf+logreg"
+    tipo_clf = TIPO_CLASIFICADOR
     con.executemany(
         "INSERT INTO resultados_clasificacion VALUES (?, ?, ?, ?, ?, ?, ?)",
         [(r["doc_id"], r["categoria_real"], r["categoria_predicha"],
@@ -1399,12 +1399,12 @@ class TechMindInference:
 
 
 servicio = TechMindInference.desde_objetos(
-    modelo_clasificacion=modelo_b if GANADOR == "B" else modelo_a,
+    modelo_clasificacion=MODELO_SERVIDO,
     label_encoder=le,
     modelo_embeddings=modelo_embeddings,
     pipeline_nlp=nlp,
     cfg=CFG,
-    tipo_clasificador="sbert+logreg" if GANADOR == "B" else "tfidf+logreg",
+    tipo_clasificador=TIPO_CLASIFICADOR,
     modelo_keybert=kw_model,
     extractor_yake=extractor_yake,
     mapa_tecnologias=_MAPA_TECNOLOGIAS,
@@ -1623,9 +1623,9 @@ def test_sin_globales() -> str:
     """
     import builtins
     servicio_aislado = TechMindInference.desde_objetos(
-        modelo_clasificacion=modelo_b if GANADOR == "B" else modelo_a,
+        modelo_clasificacion=MODELO_SERVIDO,
         label_encoder=le, modelo_embeddings=modelo_embeddings, pipeline_nlp=nlp,
-        cfg=CFG, tipo_clasificador="sbert+logreg" if GANADOR == "B" else "tfidf+logreg",
+        cfg=CFG, tipo_clasificador=TIPO_CLASIFICADOR,
         modelo_keybert=kw_model, extractor_yake=extractor_yake,
         mapa_tecnologias=_MAPA_TECNOLOGIAS, centroides=CENTROIDES, cache=CACHE,
     )
@@ -1822,6 +1822,37 @@ def test_composicion_entrada_unica() -> str:
     return "OK" if componer_entrada(t, x, CFG) == esperado else "FALLO"
 
 
+def test_calibracion_llega_a_produccion() -> str:
+    """Verifica que el modelo calibrado es el que sirve, no solo el que se mide.
+
+    La calibración se evalúa en 5.4.1b y se adopta si mejora el Brier score. Pero
+    adoptarla significa poco si el servicio de inferencia sigue instanciado con el
+    modelo sin calibrar: la tabla de métricas mejoraría y las probabilidades que ve
+    el usuario del endpoint seguirían siendo las de antes. Esta prueba compara la
+    identidad del objeto, no su comportamiento, porque el fallo es de cableado.
+    """
+    if not CALIBRACION_APLICADA:
+        return "OK (calibración no adoptada; se sirve el modelo original)"
+
+    if servicio.clf is not MODELO_SERVIDO:
+        return "FALLO: el servicio no usa MODELO_SERVIDO"
+    if not isinstance(servicio.clf, CalibratedClassifierCV):
+        return (f"FALLO: se adoptó la calibración pero el servicio tiene un "
+                f"{type(servicio.clf).__name__}")
+
+    # El artefacto en disco debe coincidir: es lo que cargará el backend FastAPI.
+    ruta = CFG.rutas.models / "modelo_clasificacion.joblib"
+    if ruta.exists():
+        if not isinstance(joblib.load(ruta), CalibratedClassifierCV):
+            return "FALLO: el .joblib serializado no está calibrado"
+
+    # Y la confianza debe reflejarlo: sin calibrar la media rondaba 0.50.
+    r = servicio.procesar("Despliegue continuo con Docker y Kubernetes",
+                          "Guía práctica para containerizar una aplicación y "
+                          "publicarla mediante integración continua.")
+    return f"OK (calibrado, p={r['probabilidad']:.3f})"
+
+
 PRUEBAS = [
     ("contrato JSON mínimo", test_contrato_minimo),
     ("validación rechaza entradas inválidas", test_validacion_rechaza),
@@ -1839,6 +1870,7 @@ PRUEBAS = [
     ("ejemplos del brief bien clasificados", test_ejemplos_del_brief),
     ("el título aporta entidades técnicas", test_titulo_aporta_entidades),
     ("composición única de la entrada", test_composicion_entrada_unica),
+    ("la calibración llega a producción", test_calibracion_llega_a_produccion),
 ]
 
 print("PRUEBAS DE SANIDAD\n")
