@@ -1847,10 +1847,10 @@ def test_calibracion_llega_a_produccion() -> str:
             return "FALLO: el .joblib serializado no está calibrado"
 
     # Y la confianza debe reflejarlo: sin calibrar la media rondaba 0.50.
-    r = servicio.procesar("Despliegue continuo con Docker y Kubernetes",
-                          "Guía práctica para containerizar una aplicación y "
-                          "publicarla mediante integración continua.")
-    return f"OK (calibrado, p={r['probabilidad']:.3f})"
+    r = servicio.predecir("Despliegue continuo con Docker y Kubernetes",
+                           "Guía práctica para containerizar una aplicación y "
+                           "publicarla mediante integración continua.")
+    return f"OK (calibrado, p={r.probabilidad:.3f})"
 
 
 PRUEBAS = [
