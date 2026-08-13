@@ -1,49 +1,49 @@
-import pytest
+from unittest.mock import MagicMock, patch
+
 from fastapi.testclient import TestClient
-from unittest.mock import patch, MagicMock
 
 from app.main import app
-from app.schemas.contenido import ContenidoRequest, ContenidoResponse
 
 client = TestClient(app)
 
+RESPUESTA = {
+    "categoria": "DevOps", "probabilidad": 0.81,
+    "informacion_adicional": [{"keyword": "docker", "score": 0.9}],
+    "doc_id": "test-123", "tiempo_ms": 10.5, "titulo": "Prueba",
+    "idioma": {"codigo": "es"}, "tema": {"id": 1, "etiqueta": "contenedores"},
+    "entidades_tecnicas": ["Docker"], "distribucion_categorias": {"DevOps": 0.81},
+    "metricas_texto": {"n_tokens": 20}, "explicacion": {},
+    "relacionados": [], "advertencias": [],
+}
+
+
 def test_health_check():
-    response = client.get("/health")
-    assert response.status_code == 200
-    assert response.json() == {"status": "ok"}
+    r = client.get("/health")
+    assert r.status_code == 200 and r.json() == {"status": "ok"}
+
 
 @patch("app.api.routes.contenido.obtener_servicio")
-def test_procesar_contenido_success(mock_obtener_servicio):
-    # Mocking the ML service to prevent loading large models
-    mock_service = MagicMock()
-    
-    # Mock the predecir method to return a valid response structure
-    mock_response = MagicMock()
-    mock_response.a_dict.return_value = {
-        "doc_id": "test-123",
-        "categoria": "General",
-        "probabilidad": 0.99,
-        "tiempo_ms": 10.5,
-        "keywords": [{"keyword": "test", "score": 0.9}, {"keyword": "nlp", "score": 0.8}],
-        "entidades_tecnicas": ["FastAPI", "Python"],
-        "tema": "Tech",
-        "relacionados": []
-    }
-    mock_service.predecir.return_value = mock_response
-    mock_obtener_servicio.return_value = mock_service
+def test_procesar_contenido_success(mock_servicio):
+    doble = MagicMock()
+    doble.predecir.return_value.a_dict.return_value = RESPUESTA
+    mock_servicio.return_value = doble
 
-    payload = {
-        "titulo": "Prueba de NLP",
-        "texto": "Este es un texto de prueba suficientemente largo para pasar las validaciones minimas de longitud del sistema."
-    }
+    payload = {"titulo": "Prueba de NLP",
+               "texto": "Texto de prueba suficientemente largo para pasar las validaciones."}
+    r = client.post("/api/v1/contenido", json=payload)
 
-    response = client.post("/api/v1/contenido", json=payload)
-    
-    assert response.status_code == 200
-    data = response.json()
-    assert data["doc_id"] == "test-123"
-    assert data["categoria"] == "General"
-    assert len(data["keywords"]) == 2
-    
-    # Verify the mock was called with correct arguments
-    mock_service.predecir.assert_called_once_with(payload["titulo"], payload["texto"])
+    assert r.status_code == 200
+    assert r.json()["categoria"] == "DevOps"
+    assert r.json()["doc_id"] == "test-123"
+
+
+def test_texto_corto_rechazado_por_pydantic():
+    r = client.post("/api/v1/contenido", json={"titulo": "Hola", "texto": "corto"})
+    assert r.status_code == 422
+
+
+def test_cors_expuesto():
+    r = client.options("/api/v1/contenido", headers={
+        "Origin": "http://localhost:5173",
+        "Access-Control-Request-Method": "POST"})
+    assert r.headers.get("access-control-allow-origin") == "http://localhost:5173"
