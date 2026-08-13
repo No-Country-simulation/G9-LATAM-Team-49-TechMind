@@ -1,6 +1,6 @@
 from functools import lru_cache
 from pathlib import Path
-from app.ml.pipeline import TechMindInference
+from app.ml.core import TechMindInference
 
 @lru_cache(maxsize=1)
 def obtener_servicio() -> TechMindInference:
