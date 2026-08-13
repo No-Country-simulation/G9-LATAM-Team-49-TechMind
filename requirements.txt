@@ -1,7 +1,7 @@
 fastapi>=0.100.0
 uvicorn[standard]>=0.23.0
 pydantic>=2.0.0
-spacy>=3.7.0
+spacy>=3.8.0
 sentence-transformers>=2.2.2
 keybert>=0.8.3
 bertopic>=0.16.0
