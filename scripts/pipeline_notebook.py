@@ -1788,7 +1788,10 @@ def run_eda_and_training():
     print("\nDefiniciones listas. El sondeo (§2.3.3) va antes de la recolección (§2.3.4).")
 
     # @title 2.3.3 — Sondeo previo de las semillas (rápido, antes de scrapear)
-    SONDEAR = True          # ponlo en False para saltarte esta comprobación
+    # Sondear semillas solo tiene sentido si vamos a scrapearlas. En modo
+    # offline el corpus sale de corpus_fallback.csv y el sondeo solo gasta
+    # timeouts de red.
+    SONDEAR = not CFG.corpus.usar_fallback
     SONDEAR_TODAS = False   # True = verifica todas las filas; False = una por categoría
 
 

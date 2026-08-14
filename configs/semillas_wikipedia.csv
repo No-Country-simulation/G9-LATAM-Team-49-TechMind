@@ -1,0 +1,81 @@
+categoria,fuente,titulo_wikipedia,idioma
+Backend,wikipedia,Arquitectura de microservicios,es
+Backend,wikipedia,Django (framework),es
+Backend,wikipedia,GraphQL,es
+Backend,wikipedia,Interfaz de programación de aplicaciones,es
+Backend,wikipedia,Java (lenguaje de programación),es
+Backend,wikipedia,Middleware,es
+Backend,wikipedia,Node.js,es
+Backend,wikipedia,Servicio web,es
+Backend,wikipedia,Spring Framework,es
+Backend,wikipedia,Transferencia de Estado Representacional,es
+Bases de Datos,wikipedia,Base de datos relacional,es
+Bases de Datos,wikipedia,MongoDB,es
+Bases de Datos,wikipedia,MySQL,es
+Bases de Datos,wikipedia,NoSQL,es
+Bases de Datos,wikipedia,Normalización de bases de datos,es
+Bases de Datos,wikipedia,PostgreSQL,es
+Bases de Datos,wikipedia,Redis,es
+Bases de Datos,wikipedia,SQL,es
+Bases de Datos,wikipedia,Transacción (base de datos),es
+Bases de Datos,wikipedia,Índice (base de datos),es
+Cloud,wikipedia,Amazon Web Services,es
+Cloud,wikipedia,Centro de procesamiento de datos,es
+Cloud,wikipedia,Computación en la nube,es
+Cloud,wikipedia,Google Cloud Platform,es
+Cloud,wikipedia,Infraestructura como servicio,es
+Cloud,wikipedia,Microsoft Azure,es
+Cloud,wikipedia,Nube privada virtual,es
+Cloud,wikipedia,Nube pública,es
+Cloud,wikipedia,Plataforma como servicio,es
+Cloud,wikipedia,Software como servicio,es
+Data Science,wikipedia,Análisis de datos,es
+Data Science,wikipedia,Análisis de grupos,es
+Data Science,wikipedia,Aprendizaje automático,es
+Data Science,wikipedia,Aprendizaje profundo,es
+Data Science,wikipedia,Ciencia de datos,es
+Data Science,wikipedia,K-medias,es
+Data Science,wikipedia,Procesamiento de lenguajes naturales,es
+Data Science,wikipedia,Red neuronal artificial,es
+Data Science,wikipedia,Regresión logística,es
+Data Science,wikipedia,Tf-idf,es
+DevOps,wikipedia,Control de versiones,es
+DevOps,wikipedia,Despliegue continuo,es
+DevOps,wikipedia,DevOps,es
+DevOps,wikipedia,Docker (software),es
+DevOps,wikipedia,Entrega continua,es
+DevOps,wikipedia,Git,es
+DevOps,wikipedia,Infraestructura como código,es
+DevOps,wikipedia,Integración continua,es
+DevOps,wikipedia,Kubernetes,es
+DevOps,wikipedia,Virtualización,es
+Frontend,wikipedia,Angular (framework),es
+Frontend,wikipedia,Aplicación web progresiva,es
+Frontend,wikipedia,Diseño web adaptable,es
+Frontend,wikipedia,Document Object Model,es
+Frontend,wikipedia,HTML,es
+Frontend,wikipedia,Hoja de estilos en cascada,es
+Frontend,wikipedia,JavaScript,es
+Frontend,wikipedia,React,es
+Frontend,wikipedia,TypeScript,es
+Frontend,wikipedia,Vue.js,es
+Mobile,wikipedia,Android,es
+Mobile,wikipedia,Aplicación móvil,es
+Mobile,wikipedia,Desarrollo de programas para Android,es
+Mobile,wikipedia,Flutter (software),es
+Mobile,wikipedia,IOS,es
+Mobile,wikipedia,Kotlin (lenguaje de programación),es
+Mobile,wikipedia,React Native,es
+Mobile,wikipedia,Sistema operativo móvil,es
+Mobile,wikipedia,Swift (lenguaje de programación),es
+Mobile,wikipedia,iOS SDK,es
+Seguridad,wikipedia,Autenticación,es
+Seguridad,wikipedia,Cortafuegos (informática),es
+Seguridad,wikipedia,Criptografía,es
+Seguridad,wikipedia,Cross-site scripting,es
+Seguridad,wikipedia,Función hash criptográfica,es
+Seguridad,wikipedia,Inyección SQL,es
+Seguridad,wikipedia,JSON Web Token,es
+Seguridad,wikipedia,OAuth,es
+Seguridad,wikipedia,Seguridad informática,es
+Seguridad,wikipedia,Transport Layer Security,es

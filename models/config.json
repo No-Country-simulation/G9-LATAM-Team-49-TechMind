@@ -1,0 +1,177 @@
+{
+  "version": "2.0.0",
+  "random_state": 42,
+  "nivel_log": "INFO",
+  "rutas": {
+    "base": "."
+  },
+  "validacion": {
+    "titulo_min_chars": 3,
+    "titulo_max_chars": 300,
+    "texto_min_chars": 20,
+    "texto_max_chars": 50000,
+    "corpus_min_chars": 250,
+    "max_ratio_no_alfabetico": 0.45,
+    "max_ratio_mayusculas": 0.8,
+    "shingle_n": 3,
+    "umbral_near_duplicate": 0.6
+  },
+  "idioma": {
+    "idioma_objetivo": "es",
+    "idiomas_soportados": [
+      "es"
+    ],
+    "confianza_minima": 0.7,
+    "modelos_spacy": {
+      "es": "es_core_news_sm",
+      "en": "en_core_web_sm"
+    },
+    "rechazar_idioma_no_soportado": true
+  },
+  "corpus": {
+    "archivo_semillas": "configs/semillas_wikipedia.csv",
+    "extractor_por_defecto": "html",
+    "respetar_robots": true,
+    "eliminar_bloques_codigo": true,
+    "min_chars_pagina": 400,
+    "archivo_fallback": "corpus_fallback.csv",
+    "usar_fallback": false,
+    "fallback_automatico": true,
+    "min_categorias": 3,
+    "min_documentos": 30,
+    "api_wikipedia": "https://es.wikipedia.org/w/api.php",
+    "contacto": "equipo-techmind@ejemplo.org",
+    "user_agent_plantilla": "TechMind/2.0 (hackathon; {contacto}) python-requests",
+    "timeout_http": 20,
+    "pausa_entre_peticiones": 0.5,
+    "max_reintentos": 3,
+    "backoff_base": 1.5,
+    "intercalar_semillas": true,
+    "max_docs_por_semilla": 6,
+    "secciones_excluidas": [
+      "véase también",
+      "referencias",
+      "bibliografía",
+      "enlaces externos",
+      "notas",
+      "fuentes",
+      "lecturas adicionales"
+    ]
+  },
+  "nlp": {
+    "incluir_titulo_en_texto": false,
+    "incluir_titulo_en_entidades": true,
+    "pos_relevantes": [
+      "NOUN",
+      "PROPN",
+      "ADJ"
+    ],
+    "long_minima_token": 3,
+    "batch_size_spacy": 32,
+    "stopwords_extra": [
+      "ser",
+      "estar",
+      "haber",
+      "tener",
+      "hacer",
+      "poder",
+      "deber",
+      "ejemplo",
+      "caso",
+      "forma",
+      "manera",
+      "parte",
+      "tipo",
+      "vez",
+      "año",
+      "también",
+      "así",
+      "cual",
+      "mismo",
+      "otro",
+      "cada",
+      "sobre",
+      "servicio",
+      "aplicación",
+      "sistema",
+      "software",
+      "dato",
+      "usuario",
+      "herramienta",
+      "recurso",
+      "proceso",
+      "elemento",
+      "conjunto",
+      "nivel"
+    ],
+    "etiquetas_entidad": [
+      "TECH",
+      "ORG",
+      "PRODUCT"
+    ]
+  },
+  "embeddings": {
+    "modelo": "paraphrase-multilingual-MiniLM-L12-v2",
+    "dimension_esperada": 384,
+    "batch_size": 32,
+    "normalizar": true,
+    "usar_cache": true,
+    "archivo_cache": "embeddings_cache.joblib"
+  },
+  "keywords": {
+    "top_k": 5,
+    "ngram_min": 1,
+    "ngram_max": 3,
+    "keybert_diversidad": 0.75,
+    "filtrar_keywords_por_pos": true,
+    "keybert_candidatos": 10,
+    "yake_dedup_limite": 0.7,
+    "rrf_k": 60,
+    "peso_keybert": 1.0,
+    "peso_yake": 0.8,
+    "peso_entidades": 2.5
+  },
+  "tfidf": {
+    "ngram_min": 1,
+    "ngram_max": 3,
+    "min_df": 2,
+    "max_df": 0.85,
+    "sublinear_tf": true,
+    "max_features": 8000
+  },
+  "clasificacion": {
+    "test_size": 0.25,
+    "cv_folds": 5,
+    "max_iter": 2000,
+    "C": 5.0,
+    "class_weight": "balanced",
+    "metrica_decision": "f1_macro",
+    "umbral_confianza_baja": 0.25,
+    "calibrar_probabilidades": true,
+    "metodo_calibracion": "sigmoid",
+    "n_terminos_explicabilidad": 8
+  },
+  "clustering": {
+    "k_min": 2,
+    "k_max": 16,
+    "kmeans_n_init": 10,
+    "bertopic_min_topic_size_divisor": 60,
+    "bertopic_min_topic_size_piso": 3,
+    "bertopic_ngram_max": 2,
+    "bertopic_min_df": 2,
+    "umap_n_neighbors": 8,
+    "asignar_outliers_con_kmeans": true,
+    "n_palabras_por_topico": 7
+  },
+  "vectorial": {
+    "nombre_coleccion": "techmind",
+    "metrica": "cosine",
+    "n_resultados_busqueda": 5,
+    "n_relacionados": 3
+  },
+  "persistencia": {
+    "archivo_sqlite": "techmind.db",
+    "archivo_historial": "historial_versiones.jsonl",
+    "persistir_predicciones": true
+  }
+}

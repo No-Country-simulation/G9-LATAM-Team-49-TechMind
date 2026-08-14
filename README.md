@@ -65,27 +65,32 @@ pip install -r requirements.txt
 
 ### 4. Generar Modelos de IA
 
-> ⚠️ **En construcción.** El script `scripts/extracted_notebook.py` todavía
-> depende de un kernel de Jupyter (`get_ipython()`) y no puede ejecutarse
-> desde la terminal. Por ahora los artefactos `.joblib` deben generarse
-> ejecutando `notebooks/techmind_eda_modelado.ipynb` en Google Colab y
-> copiando la carpeta `models/` resultante.
+Los artefactos `.joblib` no se versionan porque pesan cientos de MB. Para
+generarlos localmente:
 
-La API arranca y responde `/health` sin los modelos, pero el endpoint
-`/api/v1/contenido` devolverá error hasta que `models/` contenga los artefactos.
+```powershell
+python scripts/build_fallback.py      # corpus de respaldo, solo la primera vez
+python scripts/entrenar.py --offline  # entrena y serializa en models/
 ```
 
-### 5. Iniciar la API
+El modo `--offline` usa un corpus curado de 80 documentos en 8 categorías,
+sin depender de Wikipedia. Es rápido y reproducible.
 
+Para construir el corpus real scrapeando las 98 fuentes de
+`configs/semillas_documentacion.csv`:
+
+### 5. Iniciar la API
+```
 Antes de iniciar el servidor, es necesario configurar las variables de entorno básicas para habilitar las peticiones CORS y definir el comportamiento de la carga de modelos:
 
 **En Windows (PowerShell):**
 ```powershell
 $env:PYTHONPATH="src"
-$env:CORS_ORIGINS="*"
-$env:PRECARGAR_MODELOS="true"
+$env:http://localhost:5173
+if os.getenv("PRECARGAR_MODELOS", "1") == "1":
 
 python -m uvicorn app.main:app --reload
+```
 ---
 
 ## 🧪 Pruebas Automatizadas (Tests)

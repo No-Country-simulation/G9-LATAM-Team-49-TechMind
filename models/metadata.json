@@ -1,0 +1,195 @@
+{
+  "version": "2.0.0",
+  "huella_configuracion": "a5bfb47364c9886f6f0aa8cb25760826c65cef1e31cab25ed0bb51ee696c3f07",
+  "fecha_entrenamiento": "2026-08-14T12:09:43.837642",
+  "modelo": {
+    "tipo_clasificador": "tfidf+logreg",
+    "representacion": "TF-IDF sobre lemas POS",
+    "modelo_embeddings": "paraphrase-multilingual-MiniLM-L12-v2",
+    "dimension_embeddings": 384,
+    "modelo_spacy": "es_core_news_sm",
+    "idiomas_soportados": [
+      "es"
+    ],
+    "categorias": [
+      "Backend",
+      "Bases de Datos",
+      "Cloud",
+      "Data Science",
+      "DevOps",
+      "Frontend",
+      "Mobile",
+      "Seguridad"
+    ],
+    "n_topicos_bertopic": 14,
+    "k_kmeans": 10
+  },
+  "hiperparametros": {
+    "algoritmo": "LogisticRegression",
+    "C": 5.0,
+    "max_iter": 2000,
+    "class_weight": "balanced",
+    "solver": "lbfgs",
+    "random_state": 42,
+    "test_size": 0.25,
+    "cv_folds": 5,
+    "tfidf": {
+      "ngram_min": 1,
+      "ngram_max": 3,
+      "min_df": 2,
+      "max_df": 0.85,
+      "sublinear_tf": true,
+      "max_features": 8000
+    },
+    "embeddings": {
+      "modelo": "paraphrase-multilingual-MiniLM-L12-v2",
+      "dimension_esperada": 384,
+      "batch_size": 32,
+      "normalizar": true,
+      "usar_cache": true,
+      "archivo_cache": "embeddings_cache.joblib"
+    }
+  },
+  "metricas": {
+    "conjunto_prueba": {
+      "accuracy": 0.8868,
+      "precision_macro": 0.8896,
+      "recall_macro": 0.8866,
+      "f1_macro": 0.8835,
+      "precision_weighted": 0.893,
+      "recall_weighted": 0.8868,
+      "f1_weighted": 0.8853,
+      "top2_accuracy": 0.9717
+    },
+    "validacion_cruzada": {
+      "metrica": "f1_macro",
+      "folds_configurados": 5,
+      "folds_efectivos": 5,
+      "media": 0.839616010044382,
+      "desviacion": 0.02974786143705742,
+      "por_fold": [
+        0.8291,
+        0.8555,
+        0.8704,
+        0.8567,
+        0.7865
+      ]
+    },
+    "por_categoria": {
+      "Backend": {
+        "precision": 0.8571,
+        "recall": 0.8571,
+        "f1-score": 0.8571,
+        "support": 14.0
+      },
+      "Bases de Datos": {
+        "precision": 0.8125,
+        "recall": 0.9286,
+        "f1-score": 0.8667,
+        "support": 14.0
+      },
+      "Cloud": {
+        "precision": 0.8182,
+        "recall": 0.8182,
+        "f1-score": 0.8182,
+        "support": 11.0
+      },
+      "Data Science": {
+        "precision": 0.9375,
+        "recall": 1.0,
+        "f1-score": 0.9677,
+        "support": 15.0
+      },
+      "DevOps": {
+        "precision": 0.9167,
+        "recall": 0.8462,
+        "f1-score": 0.88,
+        "support": 13.0
+      },
+      "Frontend": {
+        "precision": 0.9286,
+        "recall": 0.9286,
+        "f1-score": 0.9286,
+        "support": 14.0
+      },
+      "Mobile": {
+        "precision": 0.8462,
+        "recall": 1.0,
+        "f1-score": 0.9167,
+        "support": 11.0
+      },
+      "Seguridad": {
+        "precision": 1.0,
+        "recall": 0.7143,
+        "f1-score": 0.8333,
+        "support": 14.0
+      }
+    },
+    "clustering": {
+      "ari_bertopic": 0.4243,
+      "nmi_bertopic": 0.5858,
+      "ari_kmeans": 0.421,
+      "nmi_kmeans": 0.5239,
+      "silueta_kmeans": 0.0694,
+      "ratio_outliers": 0.0
+    }
+  },
+  "dataset": {
+    "nombre": "TechMind corpus técnico ES",
+    "fuente": "Wikipedia ES (MediaWiki Action API)",
+    "respaldo_automatico_activado": false,
+    "hash_sha256": "850a6f6f9a7c4d540df2a99721faa1703a628051a66719f804c0b00832a1eda4",
+    "n_documentos": 424,
+    "n_documentos_train": 318,
+    "n_documentos_test": 106,
+    "n_categorias": 8,
+    "distribucion_categorias": {
+      "Data Science": 59,
+      "Seguridad": 58,
+      "Frontend": 56,
+      "Bases de Datos": 55,
+      "Backend": 55,
+      "DevOps": 53,
+      "Cloud": 45,
+      "Mobile": 43
+    },
+    "idiomas": {
+      "es": 424
+    },
+    "n_caracteres_total": 203291,
+    "documentos_rechazados": 6,
+    "reporte_deduplicacion": {
+      "documentos_iniciales": 431,
+      "duplicados_exactos": 6,
+      "near_duplicates": 1,
+      "documentos_finales": 424
+    }
+  },
+  "entorno": {
+    "versiones": {
+      "python": "3.12.10",
+      "numpy": "2.5.2",
+      "pandas": "3.0.5",
+      "scikit-learn": "1.9.0",
+      "joblib": "1.5.3",
+      "spacy": "3.8.15",
+      "sentence_transformers": "5.7.0",
+      "keybert": "0.9.0",
+      "bertopic": "0.17.4",
+      "yake": "0.7.1",
+      "chromadb": "1.5.9",
+      "langdetect": "instalada",
+      "torch": "2.13.0+cpu",
+      "umap": "0.5.12",
+      "hdbscan": "instalada"
+    },
+    "semillas": {
+      "PYTHONHASHSEED": "asignada ahora (venía como None) — NO afecta a esta sesión",
+      "random": "fijada",
+      "numpy": "fijada",
+      "torch": "fijada (cuda disponible: False)",
+      "langdetect": "fijada",
+      "scikit-learn": "vía random_state=42 en cada estimador"
+    }
+  }
+}

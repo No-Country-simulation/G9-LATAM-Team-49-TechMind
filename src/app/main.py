@@ -11,7 +11,7 @@ from app.services.nlp_service import obtener_servicio
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Precarga los modelos al arrancar, no en la primera peticion.
-    if os.getenv("PRECARGAR_MODELOS", "1") == "1":
+    if os.getenv("PRECARGAR_MODELOS", "1").strip().lower() in ("1", "true", "yes", "si"):
         try:
             obtener_servicio()
         except Exception as exc:
