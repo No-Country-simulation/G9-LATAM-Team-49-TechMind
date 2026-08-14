@@ -14,10 +14,8 @@ import logging
 import os
 import random
 import re
-import sqlite3
 import time
 import unicodedata
-from collections import Counter
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
 from typing import Any, Callable, Iterable, Sequence
@@ -336,11 +334,11 @@ def fijar_semillas(semilla: int = CFG.random_state, verboso: bool = True) -> dic
             f"asignada ahora (venía como {_previa!r}) — NO afecta a esta sesión")
         # Aquí todavía no existe `log`: el logger se configura en §0.6.
         if verboso:
-            print(f"\n  AVISO: PYTHONHASHSEED no estaba fijada al arrancar el kernel.")
-            print(f"  El orden de iteración de sets y dicts de esta sesión ya está")
-            print(f"  decidido, así que el orden de los tópicos de BERTopic puede")
-            print(f"  variar entre reinicios aunque el resto sí sea reproducible.")
-            print(f"  Para reproducibilidad estricta, arranca el proceso con")
+            print("\n  AVISO: PYTHONHASHSEED no estaba fijada al arrancar el kernel.")
+            print("  El orden de iteración de sets y dicts de esta sesión ya está")
+            print("  decidido, así que el orden de los tópicos de BERTopic puede")
+            print("  variar entre reinicios aunque el resto sí sea reproducible.")
+            print("  Para reproducibilidad estricta, arranca el proceso con")
             print(f"  PYTHONHASHSEED={semilla} en el entorno.\n")
 
     random.seed(semilla)
@@ -885,6 +883,7 @@ TECNOLOGIAS = [
     "inyección de dependencias", "programación orientada a objetos", "test unitario",
 ]
 
+REGISTRO_IDIOMAS = RegistroIdiomas()
 
 def construir_pipeline_nlp(codigo_idioma: str = CFG.idioma.idioma_objetivo,
                            tecnologias: list = TECNOLOGIAS):
