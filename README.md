@@ -29,7 +29,7 @@ TechMind/
 │       ├── api/        # Endpoints y Rutas (FastAPI)
 │       ├── ml/         # Lógica de Inteligencia Artificial
 │       └── services/   # Orquestación e Inferencia
-├── data/               # Datasets crudos y preprocesados
+├── datasets/           # Datasets crudos y preprocesados
 ├── models/             # Artefactos binarios de IA (.joblib)
 ├── scripts/            # Utilidades y automatización de entrenamiento
 ├── tests/              # Pruebas unitarias automatizadas (Mocks)
@@ -64,26 +64,28 @@ pip install -r requirements.txt
 ```
 
 ### 4. Generar Modelos de IA
-*Si descargas el repo por primera vez, los archivos `.joblib` en `models/` no existirán debido a que pesan gigabytes y están protegidos por el `.gitignore`.*
 
-Para entrenar y generarlos localmente usando el dataset integrado:
-```bash
-python scripts/extracted_notebook.py
+> ⚠️ **En construcción.** El script `scripts/extracted_notebook.py` todavía
+> depende de un kernel de Jupyter (`get_ipython()`) y no puede ejecutarse
+> desde la terminal. Por ahora los artefactos `.joblib` deben generarse
+> ejecutando `notebooks/techmind_eda_modelado.ipynb` en Google Colab y
+> copiando la carpeta `models/` resultante.
+
+La API arranca y responde `/health` sin los modelos, pero el endpoint
+`/api/v1/contenido` devolverá error hasta que `models/` contenga los artefactos.
 ```
 
 ### 5. Iniciar la API
-```bash
-# Exportar PYTHONPATH para que Python detecte la carpeta src/
-# En Windows (Powershell):
+
+Antes de iniciar el servidor, es necesario configurar las variables de entorno básicas para habilitar las peticiones CORS y definir el comportamiento de la carga de modelos:
+
+**En Windows (PowerShell):**
+```powershell
 $env:PYTHONPATH="src"
-# En Linux/macOS:
-export PYTHONPATH="src"
+$env:CORS_ORIGINS="*"
+$env:PRECARGAR_MODELOS="true"
 
 python -m uvicorn app.main:app --reload
-```
-
-La API estará disponible en `http://localhost:8000/docs` (Swagger UI).
-
 ---
 
 ## 🧪 Pruebas Automatizadas (Tests)
