@@ -9,7 +9,7 @@ import re
 import textwrap
 from pathlib import Path
 
-P = Path("src/app/ml/pipeline.py")
+P = Path("scripts/pipeline_notebook.py")
 L = P.read_text(encoding="utf-8").splitlines(keepends=True)
 
 

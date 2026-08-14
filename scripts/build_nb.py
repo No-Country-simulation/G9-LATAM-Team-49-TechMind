@@ -11,8 +11,9 @@ Uso::
 Para editar una sección concreta, se toca su módulo y se vuelve a ejecutar este
 script. El orden de los imports ES el orden de las celdas del notebook.
 """
-
+from pathlib import Path
 from nbgen.core import build
+SALIDA = Path(__file__).resolve().parent.parent / "notebooks" / "techmind_eda_modelado.ipynb"
 
 # El orden de importación define el orden de las celdas. No reordenar sin
 # revisar las dependencias entre símbolos (una celda no puede usar algo que
@@ -31,6 +32,6 @@ import nbgen.p5_cierre            # §8  — OCI, rendimiento, empaquetado
 
 
 if __name__ == "__main__":
-    resumen = build("techmind_eda_modelado.ipynb")
+    resumen = build(str(SALIDA))
     print(f"OK: {resumen['total']} celdas "
           f"({resumen['code']} de código, {resumen['markdown']} markdown)")
