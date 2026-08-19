@@ -1,0 +1,215 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Sidebar from '../components/Sidebar.astro';
+import Header from '../components/Header.astro';
+---
+
+<Layout title="TechMind - Analyze Content">
+  <Sidebar />
+
+  <div class="flex-1 ml-[280px] flex flex-col h-full overflow-hidden">
+    <Header />
+
+    <main class="flex-1 overflow-y-auto p-md md:p-xl bg-background">
+      <div class="max-w-[1000px] mx-auto flex flex-col gap-xl">
+        
+        <!-- Header -->
+        <div class="mb-lg">
+          <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-xs">Analyze your technical content</h2>
+          <p class="font-body-lg text-body-lg text-on-surface-variant">Automatically discover topics, keywords, and categories using AI.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+          <!-- Main Textarea Column -->
+          <div class="lg:col-span-8 flex flex-col gap-md">
+            <form id="analyze-form" class="bg-surface-container-lowest border border-outline-variant rounded-DEFAULT flex flex-col relative focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
+              <input type="text" id="content-title" required class="w-full p-md pb-0 bg-transparent border-none font-headline-md text-on-surface focus:ring-0 placeholder:text-on-surface-variant/50" placeholder="Title of the document (Required)" />
+              <textarea id="content-text" required minlength="20" class="w-full h-[350px] p-md bg-transparent border-none resize-none font-body-md text-on-surface focus:ring-0 placeholder:text-on-surface-variant/50" placeholder="Paste your technical content here to analyze..."></textarea>
+              
+              <div class="absolute bottom-0 left-0 right-0 p-3 bg-surface-container-lowest border-t border-outline-variant/50 flex justify-between items-center text-on-surface-variant font-label-sm text-label-sm">
+                <div class="flex gap-4">
+                  <span id="char-count">0 characters</span>
+                </div>
+                <button type="submit" id="submit-btn" class="bg-primary-container text-on-primary px-4 py-2 rounded-DEFAULT font-label-md text-label-md hover:bg-primary-container/90 transition-colors flex items-center gap-2">
+                  <span class="btn-text">Analyze Content</span>
+                  <span id="loading-spinner" class="hidden material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
+                </button>
+              </div>
+            </form>
+            <div id="error-message" class="hidden bg-error-container text-on-error-container p-md rounded-DEFAULT font-body-sm text-body-sm mt-2 border border-error/20"></div>
+          </div>
+
+          <!-- Side Options Column -->
+          <div class="lg:col-span-4 flex flex-col gap-md">
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-DEFAULT p-md">
+              <h4 class="font-label-md text-label-md text-on-surface mb-md border-b border-outline-variant pb-xs">Analysis Parameters</h4>
+              <div class="space-y-sm">
+                <label class="flex items-center gap-3 cursor-pointer">
+                  <input type="number" id="n-keywords" value="5" min="1" max="50" class="w-16 rounded border-outline-variant text-primary-container focus:ring-primary-container p-1 text-sm"/>
+                  <span class="font-body-sm text-body-sm text-on-surface-variant">Number of Keywords</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Section (Hidden initially) -->
+        <div id="results-section" class="hidden flex-col gap-lg mt-xl border-t border-outline-variant pt-xl">
+          <div class="flex flex-col gap-sm">
+            <h1 class="font-headline-lg text-headline-lg text-on-surface">Analysis Results</h1>
+            <p class="font-body-md text-body-md text-on-surface-variant max-w-[768px]">Comprehensive breakdown of text analysis, classification, and entity extraction.</p>
+          </div>
+
+          <div class="grid grid-cols-12 gap-lg">
+            <!-- Classification -->
+            <div class="col-span-12 lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col gap-md">
+              <div class="flex items-center gap-sm border-b border-outline-variant/30 pb-sm">
+                <span class="material-symbols-outlined text-primary">category</span>
+                <h2 class="font-headline-md text-headline-md text-on-surface">Classification</h2>
+              </div>
+              <div class="flex-1 flex flex-col justify-center gap-lg">
+                <div>
+                  <div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Primary Category</div>
+                  <div id="res-category" class="font-display-lg text-display-lg text-on-surface break-words leading-tight">-</div>
+                </div>
+                <div>
+                  <div class="flex justify-between items-end mb-xs">
+                    <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Confidence Score</span>
+                    <span id="res-score-text" class="font-headline-md text-headline-md text-primary">0%</span>
+                  </div>
+                  <div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
+                    <div id="res-score-bar" class="h-full bg-primary rounded-full" style="width: 0%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Entities / Topics (Replacing BERTopic mock) -->
+            <div class="col-span-12 lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col gap-md">
+              <div class="flex items-center justify-between border-b border-outline-variant/30 pb-sm">
+                <div class="flex items-center gap-sm">
+                  <span class="material-symbols-outlined text-primary">schema</span>
+                  <h2 class="font-headline-md text-headline-md text-on-surface">Technical Entities</h2>
+                </div>
+              </div>
+              <div id="res-entities" class="flex flex-wrap gap-sm">
+                <!-- Entities will be injected here -->
+              </div>
+            </div>
+
+            <!-- Keywords -->
+            <div class="col-span-12 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col gap-md">
+              <div class="flex items-center gap-sm border-b border-outline-variant/30 pb-sm">
+                <span class="material-symbols-outlined text-primary">label</span>
+                <h2 class="font-headline-md text-headline-md text-on-surface">Keywords Extracted</h2>
+              </div>
+              <div id="res-keywords" class="flex flex-wrap gap-sm">
+                <!-- Keywords injected here -->
+              </div>
+            </div>
+            
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</Layout>
+
+<script>
+  import { processContent } from '../services/api';
+
+  const form = document.getElementById('analyze-form') as HTMLFormElement;
+  const titleInput = document.getElementById('content-title') as HTMLInputElement;
+  const textInput = document.getElementById('content-text') as HTMLTextAreaElement;
+  const keywordsInput = document.getElementById('n-keywords') as HTMLInputElement;
+  const charCount = document.getElementById('char-count');
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+  const loadingSpinner = document.getElementById('loading-spinner');
+  const btnText = submitBtn.querySelector('.btn-text');
+  const errorMsg = document.getElementById('error-message');
+  const resultsSection = document.getElementById('results-section');
+
+  // Update char count
+  textInput.addEventListener('input', () => {
+    if (charCount) charCount.textContent = `${textInput.value.length} characters`;
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    // UI state: loading
+    submitBtn.disabled = true;
+    loadingSpinner?.classList.remove('hidden');
+    if (btnText) btnText.textContent = 'Processing...';
+    errorMsg?.classList.add('hidden');
+    resultsSection?.classList.add('hidden');
+
+    try {
+      const payload = {
+        titulo: titleInput.value,
+        texto: textInput.value,
+        n_keywords: parseInt(keywordsInput.value) || 5
+      };
+
+      const result = await processContent(payload);
+
+      // Populate results
+      const catEl = document.getElementById('res-category');
+      const scoreTxt = document.getElementById('res-score-text');
+      const scoreBar = document.getElementById('res-score-bar');
+      const entitiesEl = document.getElementById('res-entities');
+      const keywordsEl = document.getElementById('res-keywords');
+
+      if (catEl) catEl.textContent = result.categoria || 'Unknown';
+      
+      const prob = (result.probabilidad * 100).toFixed(1);
+      if (scoreTxt) scoreTxt.textContent = `${prob}%`;
+      if (scoreBar) scoreBar.style.width = `${prob}%`;
+
+      if (entitiesEl) {
+        entitiesEl.innerHTML = '';
+        if (result.entidades_tecnicas && result.entidades_tecnicas.length > 0) {
+          result.entidades_tecnicas.forEach(ent => {
+            const span = document.createElement('span');
+            span.className = 'font-label-sm text-label-sm text-on-surface-variant bg-surface-variant px-3 py-1.5 rounded-sm border border-outline-variant/20';
+            span.textContent = ent;
+            entitiesEl.appendChild(span);
+          });
+        } else {
+          entitiesEl.textContent = 'No technical entities detected.';
+        }
+      }
+
+      if (keywordsEl) {
+        keywordsEl.innerHTML = '';
+        if (result.tema && result.tema.keywords) {
+          result.tema.keywords.forEach((kw: string) => {
+            const span = document.createElement('span');
+            span.className = 'font-label-sm text-label-sm text-on-surface-variant bg-primary-fixed/20 text-on-primary-container px-3 py-1.5 rounded-sm border border-primary-fixed';
+            span.textContent = kw;
+            keywordsEl.appendChild(span);
+          });
+        } else {
+          keywordsEl.textContent = 'No keywords extracted.';
+        }
+      }
+
+      // Show results
+      resultsSection?.classList.remove('hidden');
+      resultsSection?.classList.add('flex');
+      resultsSection?.scrollIntoView({ behavior: 'smooth' });
+
+    } catch (err: any) {
+      if (errorMsg) {
+        errorMsg.textContent = `Error: ${err.message}`;
+        errorMsg.classList.remove('hidden');
+      }
+    } finally {
+      // Reset UI state
+      submitBtn.disabled = false;
+      loadingSpinner?.classList.add('hidden');
+      if (btnText) btnText.textContent = 'Analyze Content';
+    }
+  });
+</script>

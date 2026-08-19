@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TechMind - Results</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface": "#fcf8fa",
+                      "surface-container": "#f0edef",
+                      "primary-fixed-dim": "#bec6e0",
+                      "tertiary-container": "#271901",
+                      "inverse-primary": "#bec6e0",
+                      "on-tertiary-fixed-variant": "#574425",
+                      "on-primary-fixed": "#131b2e",
+                      "outline": "#76777d",
+                      "on-surface-variant": "#45464d",
+                      "on-primary-fixed-variant": "#3f465c",
+                      "background": "#fcf8fa",
+                      "surface-variant": "#e4e2e4",
+                      "surface-container-low": "#f6f3f5",
+                      "on-tertiary-fixed": "#271901",
+                      "on-tertiary-container": "#98805d",
+                      "outline-variant": "#c6c6cd",
+                      "secondary-container": "#dedfeb",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-tint": "#565e74",
+                      "on-primary": "#ffffff",
+                      "on-secondary-fixed-variant": "#444650",
+                      "inverse-on-surface": "#f3f0f2",
+                      "tertiary-fixed": "#fcdeb5",
+                      "on-surface": "#1b1b1d",
+                      "on-background": "#1b1b1d",
+                      "surface-container-high": "#eae7e9",
+                      "surface-container-highest": "#e4e2e4",
+                      "on-secondary-fixed": "#191b24",
+                      "error": "#ba1a1a",
+                      "secondary-fixed": "#e1e2ed",
+                      "inverse-surface": "#303032",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-container": "#60626c",
+                      "secondary-fixed-dim": "#c4c6d1",
+                      "error-container": "#ffdad6",
+                      "tertiary-fixed-dim": "#dec29a",
+                      "primary-fixed": "#dae2fd",
+                      "on-error-container": "#93000a",
+                      "tertiary": "#000000",
+                      "primary-container": "#131b2e",
+                      "on-error": "#ffffff",
+                      "surface-dim": "#dcd9db",
+                      "primary": "#000000",
+                      "secondary": "#5c5e68",
+                      "surface-bright": "#fcf8fa",
+                      "on-primary-container": "#7c839b",
+                      "on-secondary": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "xl": "32px",
+                      "lg": "24px",
+                      "sm": "8px",
+                      "container-max": "1440px",
+                      "sidebar-width": "280px",
+                      "md": "16px",
+                      "xs": "4px",
+                      "base": "4px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                              "Geist"
+                      ],
+                      "headline-md": [
+                              "Geist"
+                      ],
+                      "body-sm": [
+                              "Inter"
+                      ],
+                      "label-sm": [
+                              "Geist"
+                      ],
+                      "label-md": [
+                              "Geist"
+                      ],
+                      "display-lg": [
+                              "Geist"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Geist"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface text-primary dark:text-on-surface font-headline-md text-headline-md docked full-width top-0 border-b border-outline-variant flat no shadows transition-all duration-200 flex justify-between items-center ml-[280px] px-lg h-16 sticky z-20">
+<div class="flex items-center gap-sm">
+<img alt="TechMind Logo" class="w-8 h-8 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBftmat9SxEPSBKSphwq027hDm5Ch-vq_p5lABlLEMTibxHhOt85SklxGmNjxSuNNLkCiZUxCnf5g9-r-7_FObl8JswhNMKSMPKxt1uj2B46bYp6aRCx98cTzDcmhj6jjeSiVHXXvXZent4DHHs9ScHL4QxLx6Y9PGYsLwGDWIqQslsOwTuHMYlBV6R-pVuWodU_RR1udBsfhxJP68WZZlCzUyRSQkE4OmKaWwfoe89cUDOk-hH5oEHQ"/>
+<span class="font-headline-md text-headline-md font-bold text-primary">TechMind</span>
+</div>
+<div class="flex items-center gap-md">
+<button aria-label="account_tree" class="text-on-surface-variant hover:bg-surface-container-low p-sm rounded-lg transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+</button>
+<button aria-label="dns" class="text-on-surface-variant hover:bg-surface-container-low p-sm rounded-lg transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="dns">dns</span>
+</button>
+<button aria-label="settings_input_component" class="text-on-surface-variant hover:bg-surface-container-low p-sm rounded-lg transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="bg-primary-container dark:bg-primary-container text-on-primary dark:text-inverse-primary font-label-md text-label-md fixed left-0 top-0 h-full w-sidebar-width bg-primary-container border-r border-outline-variant/10 flat no shadows flex flex-col h-full p-md z-30">
+<div class="mb-lg flex items-center gap-sm px-sm pt-sm">
+<img alt="TechMind Logo" class="w-10 h-10 object-contain rounded-lg bg-white/5 p-1" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBftmat9SxEPSBKSphwq027hDm5Ch-vq_p5lABlLEMTibxHhOt85SklxGmNjxSuNNLkCiZUxCnf5g9-r-7_FObl8JswhNMKSMPKxt1uj2B46bYp6aRCx98cTzDcmhj6jjeSiVHXXvXZent4DHHs9ScHL4QxLx6Y9PGYsLwGDWIqQslsOwTuHMYlBV6R-pVuWodU_RR1udBsfhxJP68WZZlCzUyRSQkE4OmKaWwfoe89cUDOk-hH5oEHQ"/>
+<div>
+<div class="font-headline-md text-headline-md font-bold text-on-primary">TechMind</div>
+<div class="font-label-sm text-label-sm text-on-primary/70">Analysis Platform</div>
+</div>
+</div>
+<div class="flex flex-col gap-xs mt-md">
+<a class="text-on-primary-container/70 hover:text-white hover:bg-white/5 transition-colors active:scale-95 duration-150 flex items-center gap-md px-md py-sm rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="text-on-primary-container/70 hover:text-white hover:bg-white/5 transition-colors active:scale-95 duration-150 flex items-center gap-md px-md py-sm rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span>Analyze</span>
+</a>
+<a class="bg-white/10 text-white rounded-lg hover:bg-white/5 transition-colors active:scale-95 duration-150 flex items-center gap-md px-md py-sm" href="#">
+<span class="material-symbols-outlined" data-icon="assignment_turned_in">assignment_turned_in</span>
+<span>Results</span>
+</a>
+<a class="text-on-primary-container/70 hover:text-white hover:bg-white/5 transition-colors active:scale-95 duration-150 flex items-center gap-md px-md py-sm rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span>History</span>
+</a>
+<a class="text-on-primary-container/70 hover:text-white hover:bg-white/5 transition-colors active:scale-95 duration-150 flex items-center gap-md px-md py-sm rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="bar_chart">bar_chart</span>
+<span>Stats</span>
+</a>
+<a class="text-on-primary-container/70 hover:text-white hover:bg-white/5 transition-colors active:scale-95 duration-150 flex items-center gap-md px-md py-sm rounded-lg mt-auto" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-[280px] p-xl flex flex-col gap-xl">
+<!-- Header Section -->
+<div class="flex flex-col gap-sm">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Analysis Results</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-3xl">Comprehensive breakdown of text analysis, classification, and entity extraction.</p>
+</div>
+<!-- Bento Grid Layout for Results -->
+<div class="grid grid-cols-12 gap-lg">
+<!-- Section 1: Classification (Span 4) -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col gap-md">
+<div class="flex items-center gap-sm border-b border-outline-variant/30 pb-sm">
+<span class="material-symbols-outlined text-primary" data-icon="category">category</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Classification</h2>
+</div>
+<div class="flex-1 flex flex-col justify-center gap-lg">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Primary Category</div>
+<div class="font-display-lg text-display-lg text-on-surface">Artificial Intelligence</div>
+</div>
+<div>
+<div class="flex justify-between items-end mb-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Confidence Score</span>
+<span class="font-headline-md text-headline-md text-primary">94.8%</span>
+</div>
+<div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full w-[94.8%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 2: Topics Detected (Span 8) -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col gap-md">
+<div class="flex items-center justify-between border-b border-outline-variant/30 pb-sm">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="schema">schema</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Topics Detected (BERTopic)</h2>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Top 3 Clusters</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md flex-1">
+<!-- Topic Card 1 -->
+<div class="bg-surface border border-outline-variant/50 rounded-lg p-md hover:bg-surface-container-low transition-colors group">
+<div class="flex justify-between items-start mb-sm">
+<div class="font-label-md text-label-md text-primary bg-primary-fixed text-on-primary-fixed px-2 py-1 rounded-sm w-fit">Topic 01</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">42 docs</span>
+</div>
+<h3 class="font-body-lg text-body-lg text-on-surface font-medium mb-xs">Natural Language Processing</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-on-surface transition-colors">Core concepts relating to syntax, semantics, and text generation models.</p>
+</div>
+<!-- Topic Card 2 -->
+<div class="bg-surface border border-outline-variant/50 rounded-lg p-md hover:bg-surface-container-low transition-colors group">
+<div class="flex justify-between items-start mb-sm">
+<div class="font-label-md text-label-md text-primary bg-secondary-container text-on-secondary-container px-2 py-1 rounded-sm w-fit">Topic 02</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">28 docs</span>
+</div>
+<h3 class="font-body-lg text-body-lg text-on-surface font-medium mb-xs">Machine Learning</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-on-surface transition-colors">Algorithms, training paradigms, and statistical modeling approaches.</p>
+</div>
+<!-- Topic Card 3 -->
+<div class="bg-surface border border-outline-variant/50 rounded-lg p-md hover:bg-surface-container-low transition-colors group">
+<div class="flex justify-between items-start mb-sm">
+<div class="font-label-md text-label-md text-primary bg-surface-variant text-on-surface-variant px-2 py-1 rounded-sm w-fit">Topic 03</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">15 docs</span>
+</div>
+<h3 class="font-body-lg text-body-lg text-on-surface font-medium mb-xs">Data Ethics</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-on-surface transition-colors">Discussions on bias, transparency, and responsible AI deployment.</p>
+</div>
+</div>
+</div>
+<!-- Visual Transformation Flow (Span 12) -->
+<div class="col-span-12 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col gap-lg">
+<div class="flex items-center gap-sm border-b border-outline-variant/30 pb-sm">
+<span class="material-symbols-outlined text-primary" data-icon="transform">transform</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Pipeline Transformation</h2>
+</div>
+<div class="flex flex-col md:flex-row items-center justify-between gap-md w-full relative">
+<!-- Flow Line (Desktop) -->
+<div class="hidden md:block absolute top-1/2 left-[10%] right-[10%] h-[2px] bg-outline-variant/30 -translate-y-1/2 z-0"></div>
+<!-- Step 1 -->
+<div class="z-10 bg-surface border border-outline-variant rounded-lg p-md w-full md:w-1/3 flex flex-col items-center text-center shadow-sm">
+<div class="w-12 h-12 bg-surface-variant rounded-full flex items-center justify-center mb-sm border-2 border-surface-container-lowest">
+<span class="material-symbols-outlined text-on-surface" data-icon="description">description</span>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-xs">Input Phase</div>
+<div class="font-body-lg text-body-lg text-on-surface font-medium">RAW TEXT</div>
+</div>
+<!-- Connector Icon (Mobile) -->
+<span class="material-symbols-outlined text-outline-variant md:hidden" data-icon="arrow_downward">arrow_downward</span>
+<!-- Step 2 -->
+<div class="z-10 bg-surface border-2 border-primary-fixed rounded-lg p-md w-full md:w-1/3 flex flex-col items-center text-center shadow-sm">
+<div class="w-12 h-12 bg-primary-fixed rounded-full flex items-center justify-center mb-sm border-2 border-surface-container-lowest">
+<span class="material-symbols-outlined text-on-primary-fixed" data-icon="memory">memory</span>
+</div>
+<div class="font-label-sm text-label-sm text-primary uppercase mb-xs font-semibold">Processing</div>
+<div class="font-body-lg text-body-lg text-primary font-bold">NLP ENGINE</div>
+</div>
+<!-- Connector Icon (Mobile) -->
+<span class="material-symbols-outlined text-outline-variant md:hidden" data-icon="arrow_downward">arrow_downward</span>
+<!-- Step 3 -->
+<div class="z-10 bg-surface border border-outline-variant rounded-lg p-md w-full md:w-1/3 flex flex-col items-center text-center shadow-sm">
+<div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center mb-sm border-2 border-surface-container-lowest">
+<span class="material-symbols-outlined text-on-primary" data-icon="data_object">data_object</span>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-xs">Output Phase</div>
+<div class="font-body-lg text-body-lg text-on-surface font-medium">STRUCTURED INFO</div>
+</div>
+</div>
+</div>
+<!-- Section 3: Keywords (Span 12) -->
+<div class="col-span-12 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col gap-md">
+<div class="flex items-center gap-sm border-b border-outline-variant/30 pb-sm">
+<span class="material-symbols-outlined text-primary" data-icon="label">label</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Keywords Extracted (KeyBERT)</h2>
+</div>
+<div class="flex flex-wrap gap-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-variant px-3 py-1.5 rounded-sm border border-outline-variant/20">Transformer</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-variant px-3 py-1.5 rounded-sm border border-outline-variant/20">NLP</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-variant px-3 py-1.5 rounded-sm border border-outline-variant/20">Python</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-variant px-3 py-1.5 rounded-sm border border-outline-variant/20">Deep Learning</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-variant px-3 py-1.5 rounded-sm border border-outline-variant/20">Neural Networks</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-variant px-3 py-1.5 rounded-sm border border-outline-variant/20">Attention Mechanism</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-variant px-3 py-1.5 rounded-sm border border-outline-variant/20">Tokenization</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-variant px-3 py-1.5 rounded-sm border border-outline-variant/20">Embeddings</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-surface-container-low text-on-surface-variant dark:text-on-surface-variant font-body-sm text-body-sm docked full-width bottom-0 border-t border-outline-variant flat no shadows flex justify-between items-center ml-[280px] px-lg py-sm mt-auto z-20">
+<div>© 2024 TechMind Analysis Platform</div>
+<div class="flex gap-md">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">FastAPI: v2.4.1</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">System Status: Optimal</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Documentation</a>
+</div>
+</footer>
+</body></html>

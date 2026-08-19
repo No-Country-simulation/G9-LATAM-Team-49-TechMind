@@ -79,18 +79,51 @@ sin depender de Wikipedia. Es rápido y reproducible.
 Para construir el corpus real scrapeando las 98 fuentes de
 `configs/semillas_documentacion.csv`:
 
-### 5. Iniciar la API
+### 5. Configurar Variables de Entorno
+Copia el archivo `.env.example` a `.env` en la raíz del proyecto y configura tus variables:
+```bash
+cp .env.example .env
 ```
-Antes de iniciar el servidor, es necesario configurar las variables de entorno básicas para habilitar las peticiones CORS y definir el comportamiento de la carga de modelos:
+Asegúrate de que `CORS_ORIGINS` incluya los puertos de tu frontend (por defecto, `http://localhost:4321` y `http://localhost:5173`).
 
-**En Windows (PowerShell):**
+### 6. Iniciar el Backend (FastAPI)
 ```powershell
+# En Windows (PowerShell):
 $env:PYTHONPATH="src"
-$env:http://localhost:5173
-if os.getenv("PRECARGAR_MODELOS", "1") == "1":
-
 python -m uvicorn app.main:app --reload
 ```
+La API estará disponible en `http://localhost:8000/docs`.
+
+---
+
+## 🎨 Frontend (Astro)
+
+El proyecto incluye un frontend moderno y responsivo construido con **Astro** y **Tailwind CSS v4**, diseñado para integrarse directamente con la API de FastAPI de TechMind.
+
+### Instalación y Ejecución
+1. Navega al directorio del frontend:
+```bash
+cd frontend
+```
+
+2. Instala las dependencias:
+```bash
+npm install
+```
+
+3. Inicia el servidor de desarrollo:
+```bash
+npm run dev
+```
+La aplicación web interactiva estará disponible en **[http://localhost:4321](http://localhost:4321)**.
+
+### Compilar para Producción
+```bash
+npm run build
+```
+Los archivos estáticos generados se ubicarán en `frontend/dist/` y pueden ser servidos mediante un Object Storage, Vercel, o integrados directamente con tu backend.
+Para detalles sobre el despliegue en la nube, consulta `docs/OCI_DEPLOYMENT.md`.
+
 ---
 
 ## 🧪 Pruebas Automatizadas (Tests)
