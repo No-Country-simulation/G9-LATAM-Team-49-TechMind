@@ -1,21 +1,13 @@
-FROM python:3.10-slim
-
+FROM node:22-alpine AS builder
 WORKDIR /app
-
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Descargar modelo base de spaCy para que esté disponible offline
-RUN python -m spacy download es_core_news_sm
-
+COPY package*.json ./
+RUN npm install
 COPY . .
+ARG PUBLIC_API_URL
+ENV PUBLIC_API_URL=$PUBLIC_API_URL
+RUN npm run build
 
-ENV PYTHONPATH=/app/src
-
-EXPOSE 8000
-
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+FROM nginx:alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

@@ -60,3 +60,8 @@ models/*
 !models/.gitkeep
 *.db
 OCI/
+
+# Astro
+node_modules/
+dist/
+.astro/

@@ -4,8 +4,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routes.contenido import router as contenido_router
-from app.services.nlp_service import obtener_servicio
+from api.routes.contenido import router as contenido_router
+from services.nlp_service import obtener_servicio
 
 
 @asynccontextmanager

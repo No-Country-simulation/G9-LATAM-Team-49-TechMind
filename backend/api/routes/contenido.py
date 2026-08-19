@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.concurrency import run_in_threadpool
 
-from app.ml.core import ErrorValidacion
-from app.schemas.contenido import ContenidoRequest, ContenidoResponse
-from app.services.nlp_service import obtener_servicio
+from ml.core import ErrorValidacion
+from schemas.contenido import ContenidoRequest, ContenidoResponse
+from services.nlp_service import obtener_servicio
 
 router = APIRouter()
 
