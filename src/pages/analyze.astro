@@ -4,7 +4,7 @@ import Sidebar from '../components/Sidebar.astro';
 import Header from '../components/Header.astro';
 ---
 
-<Layout title="TechMind - Analyze Content">
+<Layout title="TechMind - Analizar Contenido">
   <Sidebar />
 
   <div class="flex-1 ml-[280px] flex flex-col h-full overflow-hidden">
@@ -15,23 +15,23 @@ import Header from '../components/Header.astro';
         
         <!-- Header -->
         <div class="mb-lg">
-          <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-xs">Analyze your technical content</h2>
-          <p class="font-body-lg text-body-lg text-on-surface-variant">Automatically discover topics, keywords, and categories using AI.</p>
+          <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-xs">Analiza tu contenido técnico</h2>
+          <p class="font-body-lg text-body-lg text-on-surface-variant">Descubre automáticamente tópicos, palabras clave y categorías mediante IA.</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
           <!-- Main Textarea Column -->
           <div class="lg:col-span-8 flex flex-col gap-md">
             <form id="analyze-form" class="bg-surface-container-lowest border border-outline-variant rounded-DEFAULT flex flex-col relative focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
-              <input type="text" id="content-title" required class="w-full p-md pb-0 bg-transparent border-none font-headline-md text-on-surface focus:ring-0 placeholder:text-on-surface-variant/50" placeholder="Title of the document (Required)" />
-              <textarea id="content-text" required minlength="20" class="w-full h-[350px] p-md bg-transparent border-none resize-none font-body-md text-on-surface focus:ring-0 placeholder:text-on-surface-variant/50" placeholder="Paste your technical content here to analyze..."></textarea>
+              <input type="text" id="content-title" required class="w-full p-md pb-0 bg-transparent border-none font-headline-md text-on-surface focus:ring-0 placeholder:text-on-surface-variant/50" placeholder="Título del documento (Obligatorio)" />
+              <textarea id="content-text" required minlength="20" class="w-full h-[350px] p-md bg-transparent border-none resize-none font-body-md text-on-surface focus:ring-0 placeholder:text-on-surface-variant/50" placeholder="Pega tu contenido técnico aquí para analizarlo..."></textarea>
               
               <div class="absolute bottom-0 left-0 right-0 p-3 bg-surface-container-lowest border-t border-outline-variant/50 flex justify-between items-center text-on-surface-variant font-label-sm text-label-sm">
                 <div class="flex gap-4">
-                  <span id="char-count">0 characters</span>
+                  <span id="char-count">0 caracteres</span>
                 </div>
                 <button type="submit" id="submit-btn" class="bg-primary-container text-on-primary px-4 py-2 rounded-DEFAULT font-label-md text-label-md hover:bg-primary-container/90 transition-colors flex items-center gap-2">
-                  <span class="btn-text">Analyze Content</span>
+                  <span class="btn-text">Analizar Contenido</span>
                   <span id="loading-spinner" class="hidden material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
                 </button>
               </div>
@@ -42,30 +42,30 @@ import Header from '../components/Header.astro';
           <!-- Side Options Column -->
           <div class="lg:col-span-4 flex flex-col gap-md">
             <div class="bg-surface-container-lowest border border-outline-variant rounded-DEFAULT p-md">
-              <h4 class="font-label-md text-label-md text-on-surface mb-md border-b border-outline-variant pb-xs">Analysis Parameters</h4>
+              <h4 class="font-label-md text-label-md text-on-surface mb-md border-b border-outline-variant pb-xs">Parámetros de Análisis</h4>
               <div class="space-y-sm">
                 <label class="flex items-center gap-3 cursor-pointer">
                   <input type="number" id="n-keywords" value="5" min="1" max="50" class="w-16 rounded border-outline-variant text-primary-container focus:ring-primary-container p-1 text-sm"/>
-                  <span class="font-body-sm text-body-sm text-on-surface-variant">Number of Keywords</span>
+                  <span class="font-body-sm text-body-sm text-on-surface-variant">Número de Palabras Clave</span>
                 </label>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Results Section (Hidden initially) -->
+        <!-- Resultados Section (Hidden initially) -->
         <div id="results-section" class="hidden flex-col gap-lg mt-xl border-t border-outline-variant pt-xl">
           <div class="flex flex-col gap-sm">
-            <h1 class="font-headline-lg text-headline-lg text-on-surface">Analysis Results</h1>
+            <h1 class="font-headline-lg text-headline-lg text-on-surface">Analysis Resultados</h1>
             <p class="font-body-md text-body-md text-on-surface-variant max-w-[768px]">Comprehensive breakdown of text analysis, classification, and entity extraction.</p>
           </div>
 
           <div class="grid grid-cols-12 gap-lg">
-            <!-- Classification -->
+            <!-- Clasificación -->
             <div class="col-span-12 lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col gap-md">
               <div class="flex items-center gap-sm border-b border-outline-variant/30 pb-sm">
                 <span class="material-symbols-outlined text-primary">category</span>
-                <h2 class="font-headline-md text-headline-md text-on-surface">Classification</h2>
+                <h2 class="font-headline-md text-headline-md text-on-surface">Clasificación</h2>
               </div>
               <div class="flex-1 flex flex-col justify-center gap-lg">
                 <div>
@@ -84,7 +84,7 @@ import Header from '../components/Header.astro';
               </div>
             </div>
 
-            <!-- Entities / Topics (Replacing BERTopic mock) -->
+            <!-- Entities / Tópicos (Replacing BERTopic mock) -->
             <div class="col-span-12 lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col gap-md">
               <div class="flex items-center justify-between border-b border-outline-variant/30 pb-sm">
                 <div class="flex items-center gap-sm">
@@ -97,14 +97,14 @@ import Header from '../components/Header.astro';
               </div>
             </div>
 
-            <!-- Keywords -->
+            <!-- Palabras Clave -->
             <div class="col-span-12 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col gap-md">
               <div class="flex items-center gap-sm border-b border-outline-variant/30 pb-sm">
                 <span class="material-symbols-outlined text-primary">label</span>
-                <h2 class="font-headline-md text-headline-md text-on-surface">Keywords Extracted</h2>
+                <h2 class="font-headline-md text-headline-md text-on-surface">Palabras Clave Extraídas</h2>
               </div>
               <div id="res-keywords" class="flex flex-wrap gap-sm">
-                <!-- Keywords injected here -->
+                <!-- Palabras Clave injected here -->
               </div>
             </div>
             
@@ -120,9 +120,9 @@ import Header from '../components/Header.astro';
   import { processContent } from '../services/api';
 
   const form = document.getElementById('analyze-form') as HTMLFormElement;
-  const titleInput = document.getElementById('content-title') as HTMLInputElement;
-  const textInput = document.getElementById('content-text') as HTMLTextAreaElement;
-  const keywordsInput = document.getElementById('n-keywords') as HTMLInputElement;
+  const titleEntrada = document.getElementById('content-title') as HTMLEntradaElement;
+  const textEntrada = document.getElementById('content-text') as HTMLTextAreaElement;
+  const keywordsEntrada = document.getElementById('n-keywords') as HTMLEntradaElement;
   const charCount = document.getElementById('char-count');
   const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
   const loadingSpinner = document.getElementById('loading-spinner');
@@ -131,8 +131,8 @@ import Header from '../components/Header.astro';
   const resultsSection = document.getElementById('results-section');
 
   // Update char count
-  textInput.addEventListener('input', () => {
-    if (charCount) charCount.textContent = `${textInput.value.length} characters`;
+  textEntrada.addEventListener('input', () => {
+    if (charCount) charCount.textContent = `${textEntrada.value.length} caracteres`;
   });
 
   form.addEventListener('submit', async (e) => {
@@ -147,9 +147,9 @@ import Header from '../components/Header.astro';
 
     try {
       const payload = {
-        titulo: titleInput.value,
-        texto: textInput.value,
-        n_keywords: parseInt(keywordsInput.value) || 5
+        titulo: titleEntrada.value,
+        texto: textEntrada.value,
+        n_keywords: parseInt(keywordsEntrada.value) || 5
       };
 
       const result = await processContent(payload);
@@ -209,7 +209,7 @@ import Header from '../components/Header.astro';
       // Reset UI state
       submitBtn.disabled = false;
       loadingSpinner?.classList.add('hidden');
-      if (btnText) btnText.textContent = 'Analyze Content';
+      if (btnText) btnText.textContent = 'Analizar Contenido';
     }
   });
 </script>
