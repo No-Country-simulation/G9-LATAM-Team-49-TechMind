@@ -1,4 +1,13 @@
 ---
+const pathname = Astro.url.pathname;
+const currentPath = pathname.endsWith('/') && pathname.length > 1 ? pathname.slice(0, -1) : pathname;
+
+const navItems = [
+  { path: "/", icon: "home", label: "Inicio" },
+  { path: "/dashboard", icon: "dashboard", label: "Panel de Control" },
+  { path: "/analyze", icon: "analytics", label: "Analizar" },
+  { path: "#", icon: "history", label: "Historial" }
+];
 ---
 <nav class="bg-primary-container dark:bg-primary-container text-on-primary dark:text-inverse-primary font-label-md text-label-md fixed left-0 top-0 h-full w-sidebar-width border-r border-outline-variant/10 flex flex-col p-md z-30">
   <div class="mb-lg flex items-center gap-sm px-sm pt-sm">
@@ -10,22 +19,17 @@
   </div>
 
   <div class="flex flex-col gap-xs mt-md">
-    <a href="/" class="text-on-primary-container/70 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-md px-md py-sm rounded-lg">
-      <span class="material-symbols-outlined" data-icon="home">home</span>
-      <span>Inicio</span>
-    </a>
-    <a href="/dashboard" class="text-on-primary-container/70 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-md px-md py-sm rounded-lg">
-      <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-      <span>Panel de Control</span>
-    </a>
-    <a href="/analyze" class="bg-white/10 text-white rounded-lg hover:bg-white/5 transition-colors flex items-center gap-md px-md py-sm">
-      <span class="material-symbols-outlined" data-icon="analytics">analytics</span>
-      <span>Analizar</span>
-    </a>
-    <a href="#" class="text-on-primary-container/70 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-md px-md py-sm rounded-lg">
-      <span class="material-symbols-outlined" data-icon="history">history</span>
-      <span>Historial</span>
-    </a>
+    {navItems.map((item) => {
+      const isActive = currentPath === item.path || (item.path !== "/" && item.path !== "#" && currentPath.startsWith(item.path));
+      const activeClass = isActive ? "bg-white/10 text-white" : "text-on-primary-container/70 hover:text-white hover:bg-white/5";
+      
+      return (
+        <a href={item.path} class={`${activeClass} rounded-lg transition-colors flex items-center gap-md px-md py-sm`}>
+          <span class="material-symbols-outlined" data-icon={item.icon}>{item.icon}</span>
+          <span>{item.label}</span>
+        </a>
+      );
+    })}
   </div>
 
   <div class="mt-auto flex flex-col gap-xs">
