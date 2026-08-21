@@ -65,3 +65,11 @@ OCI/
 node_modules/
 dist/
 .astro/
+
+# Claves SSH, certificados y respaldos de git
+*.key
+*.pem
+id_rsa*
+id_ed25519*
+*.bundle
+*.patch

@@ -2,11 +2,18 @@
 const pathname = Astro.url.pathname;
 const currentPath = pathname.endsWith('/') && pathname.length > 1 ? pathname.slice(0, -1) : pathname;
 
+// Solo rutas que existen y tienen contenido real.
+//
+// "Historial" y "Configuracion" apuntaban a "#": no llevaban a ninguna parte.
+// Un enlace muerto en una demo es peor que la ausencia del enlace — invita al
+// jurado a hacer clic y a encontrarse con nada. Se retiran hasta que existan.
+//
+// "Panel de Control" (/dashboard) sigue siendo una plantilla con valores a
+// cero. Si no da tiempo a poblarla con datos reales, comenta tambien su linea.
 const navItems = [
   { path: "/", icon: "home", label: "Inicio" },
   { path: "/dashboard", icon: "dashboard", label: "Panel de Control" },
   { path: "/analyze", icon: "analytics", label: "Analizar" },
-  { path: "#", icon: "history", label: "Historial" }
 ];
 ---
 <nav class="bg-primary-container dark:bg-primary-container text-on-primary dark:text-inverse-primary font-label-md text-label-md fixed left-0 top-0 h-full w-sidebar-width border-r border-outline-variant/10 flex flex-col p-md z-30">
@@ -32,10 +39,12 @@ const navItems = [
     })}
   </div>
 
-  <div class="mt-auto flex flex-col gap-xs">
-    <a href="#" class="text-on-primary-container/70 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-md px-md py-sm rounded-lg">
-      <span class="material-symbols-outlined" data-icon="settings">settings</span>
-      <span>Configuración</span>
+  <div class="mt-auto flex flex-col gap-xs px-md py-sm">
+    <a href="/docs" target="_blank" rel="noopener"
+       class="text-on-primary-container/70 hover:text-white transition-colors flex items-center gap-sm font-label-sm text-label-sm">
+      <span class="material-symbols-outlined text-[18px]" data-icon="api">api</span>
+      <span>Documentación de la API</span>
     </a>
+    <span class="text-on-primary-container/40 font-label-sm text-label-sm">v2.0.0</span>
   </div>
 </nav>

@@ -18,7 +18,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Los corchetes hacen que el COPY no falle si el fichero no existe todavia.
 COPY requirements.txt requirements.lock.tx[t] ./
 
-RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
+# torch: `--extra-index-url`, NUNCA `--index-url`.
+#
+# `--index-url` SUSTITUYE a PyPI: pip miraria solo el indice de CPU de PyTorch,
+# que existe para separar las variantes CUDA y CPU en x86_64 y no publica
+# ruedas para aarch64. Esta instancia es Ampere (ARM), asi que la instalacion
+# fallaria. `--extra-index-url` lo ANADE a PyPI: en x86_64 coge la rueda de CPU
+# y en ARM cae en la de PyPI, que alli ya es solo-CPU porque no hay variante
+# con CUDA. Asi el mismo Dockerfile sirve para las dos arquitecturas.
+RUN pip install --no-cache-dir torch --extra-index-url https://download.pytorch.org/whl/cpu
 
 RUN if [ -f requirements.lock.txt ]; then \
         echo ">>> Instalando versiones ancladas (requirements.lock.txt)"; \

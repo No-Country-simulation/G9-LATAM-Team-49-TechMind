@@ -126,6 +126,18 @@ import Header from '../components/Header.astro';
               </div>
             </div>
 
+            <!-- Contenidos relacionados (búsqueda semántica sobre ChromaDB) -->
+            <div class="col-span-12 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col gap-md">
+              <div class="flex items-center gap-sm border-b border-outline-variant/30 pb-sm">
+                <span class="material-symbols-outlined text-primary">recommend</span>
+                <h2 class="font-headline-md text-headline-md text-on-surface">Contenidos relacionados</h2>
+              </div>
+              <p class="font-body-sm text-body-sm text-on-surface-variant -mt-xs">
+                Recuperados por similitud semántica, no por coincidencia de palabras.
+              </p>
+              <div id="res-relacionados" class="flex flex-col gap-xs"></div>
+            </div>
+
             <!-- Advertencias -->
             <div id="res-advertencias-wrap" class="hidden col-span-12 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex-col gap-sm">
               <div class="flex items-center gap-sm border-b border-outline-variant/30 pb-sm">
@@ -313,6 +325,42 @@ import Header from '../components/Header.astro';
       if (idiomaEl) {
         const idioma = result.idioma ?? {};
         idiomaEl.textContent = idioma.codigo ? `Idioma: ${String(idioma.codigo).toUpperCase()}` : '';
+      }
+
+      // --- Contenidos relacionados ---
+      // Vienen de ChromaDB: son los documentos del corpus más próximos en el
+      // espacio de embeddings. Nótese que no comparten necesariamente
+      // vocabulario con el texto de entrada; esa es justamente la propiedad
+      // que TF-IDF no puede ofrecer.
+      const relEl = document.getElementById('res-relacionados');
+      if (relEl) {
+        relEl.innerHTML = '';
+        const rels = result.relacionados ?? [];
+        if (rels.length > 0) {
+          rels.forEach((r: any) => {
+            const fila = document.createElement('div');
+            fila.className = 'flex justify-between items-center gap-md font-body-sm text-body-sm text-on-surface-variant border-b border-outline-variant/20 pb-xs last:border-0';
+
+            const izq = document.createElement('span');
+            izq.textContent = `${r.titulo ?? '—'}`;
+
+            const cat = document.createElement('span');
+            cat.className = 'font-label-sm text-label-sm text-on-surface-variant/70 ml-sm';
+            cat.textContent = r.categoria ? `· ${r.categoria}` : '';
+            izq.appendChild(cat);
+
+            const der = document.createElement('span');
+            der.className = 'font-label-sm text-label-sm text-primary whitespace-nowrap';
+            der.textContent = typeof r.similitud === 'number'
+              ? `${(r.similitud * 100).toFixed(0)}% similar`
+              : '';
+
+            fila.append(izq, der);
+            relEl.appendChild(fila);
+          });
+        } else {
+          relEl.textContent = 'Sin contenidos relacionados.';
+        }
       }
 
       // --- Advertencias ---
