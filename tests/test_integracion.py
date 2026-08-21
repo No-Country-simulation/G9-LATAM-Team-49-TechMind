@@ -9,8 +9,8 @@ import numpy as np
 import pytest
 import spacy
 
-from app.ml.core import CFG, ErrorValidacion, TechMindInference
-from app.schemas.contenido import ContenidoResponse
+from ml.core import CFG, ErrorValidacion, TechMindInference
+from schemas.contenido import ContenidoResponse
 
 TEXTO = ("Guia practica para containerizar una aplicacion Python con Docker y "
          "publicarla en Kubernetes mediante un pipeline de integracion continua.")

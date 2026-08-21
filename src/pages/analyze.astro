@@ -183,8 +183,8 @@ import Header from '../components/Header.astro';
 
       if (keywordsEl) {
         keywordsEl.innerHTML = '';
-        if (result.tema && result.tema.keywords) {
-          result.tema.keywords.forEach((kw: string) => {
+        if (result.informacion_adicional && result.informacion_adicional.length > 0) {
+          result.informacion_adicional.forEach((kw: string) => {
             const span = document.createElement('span');
             span.className = 'font-label-sm text-label-sm text-on-surface-variant bg-primary-fixed/20 text-on-primary-container px-3 py-1.5 rounded-sm border border-primary-fixed';
             span.textContent = kw;

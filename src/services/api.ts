@@ -1,6 +1,6 @@
 import type { ContenidoRequest, ContenidoResponse } from '../types/techmind';
 
-const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:8000';
+const API_URL = import.meta.env.PUBLIC_API_URL || '';
 
 export async function processContent(payload: ContenidoRequest): Promise<ContenidoResponse> {
   try {
