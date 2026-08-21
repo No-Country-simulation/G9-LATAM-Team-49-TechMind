@@ -1,23 +1,50 @@
 services:
   api:
     build: ./backend
+    # La API NO se publica en internet: solo escucha en el loopback de la VM
+    # para poder depurarla con curl por SSH. El trafico publico entra por
+    # nginx (puerto 80), que hace de proxy inverso. Asi no hay que abrir el
+    # 8000 en la Security List ni en el firewall del sistema operativo.
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     volumes:
       - ./models:/app/models
       - ./chroma_db:/app/chroma_db
+      # Cache de HuggingFace: evita volver a descargar el modelo de
+      # embeddings en cada reconstruccion del contenedor.
+      - hf_cache:/root/.cache/huggingface
+    env_file:
+      - .env
     environment:
       - PORT=8000
-      - CORS_ORIGINS=http://localhost:5173,http://localhost:4321,http://147.224.239.129,http://147.224.239.129:80,http://147.224.239.129:8000
+      - PRECARGAR_MODELOS=${PRECARGAR_MODELOS:-1}
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:4321}
+      - MODELS_DIR=/app/models
+      # Integracion con OCI Object Storage (ver .env)
+      - OCI_PAR_URL=${OCI_PAR_URL:-}
+      - OCI_NAMESPACE=${OCI_NAMESPACE:-}
+      - OCI_BUCKET=${OCI_BUCKET:-}
+      - OCI_PREFIX=${OCI_PREFIX:-}
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health', timeout=5).status==200 else 1)\""]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 300s
     restart: unless-stopped
 
   frontend:
     build:
       context: .
       args:
-        - PUBLIC_API_URL=http://147.224.239.129:8000
+        # Vacio => rutas relativas y proxy de nginx. Definir solo si el
+        # frontend se sirve desde un host distinto al de la API.
+        - PUBLIC_API_URL=${PUBLIC_API_URL:-}
     ports:
       - "80:80"
     restart: unless-stopped
     depends_on:
-      - api
+      - api
+
+volumes:
+  hf_cache:

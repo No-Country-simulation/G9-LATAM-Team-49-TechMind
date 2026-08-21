@@ -16,3 +16,9 @@ requests
 langdetect>=1.0.9
 yake
 beautifulsoup4
+
+# --- OCI Object Storage (opcional) ---
+# Solo necesario para OCI_NAMESPACE/OCI_BUCKET (Instance Principals).
+# Si usas OCI_PAR_URL basta con `requests`, que ya esta arriba.
+# Descomentar para habilitar el modo SDK:
+# oci>=2.126.0

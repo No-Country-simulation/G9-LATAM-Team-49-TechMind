@@ -7,7 +7,7 @@ import shutil
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "backend"))
 
 DIRS = ["datasets", "models", "logs", "cache", "chroma_db"]
 SIMBOLOS = ["limpiar_texto", "componer_entrada", "preprocesar", "rankear_keywords",
@@ -25,7 +25,7 @@ titulo("1. El import no debe crear directorios ni imprimir nada")
 for d in DIRS:
     shutil.rmtree(d, ignore_errors=True)
 try:
-    import app.ml.core as C
+    import ml.core as C
 except Exception as exc:
     print(f"  FALLO al importar: {type(exc).__name__}: {exc}")
     sys.exit(1)

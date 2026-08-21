@@ -113,8 +113,8 @@ def main() -> int:
     # Sin el, desde_artefactos() no puede reconstruir el EntityRuler y las
     # entidades tecnicas vendrian siempre vacias. La lista vive en core.py.
     import json
-    sys.path.insert(0, str(RAIZ / "src"))
-    from app.ml.core import TECNOLOGIAS
+    sys.path.insert(0, str(RAIZ / "backend"))
+    from ml.core import TECNOLOGIAS
 
     destino = RAIZ / "models"
     destino.mkdir(exist_ok=True)
@@ -135,7 +135,7 @@ def main() -> int:
 
     print("\n" + "=" * 62)
     print("  LISTO. Arranca la API con:")
-    print('    $env:PYTHONPATH="src"; uvicorn app.main:app --reload')
+    print('    $env:PYTHONPATH="backend"; uvicorn main:app --reload --app-dir backend')
     print("=" * 62)
     return 0
 

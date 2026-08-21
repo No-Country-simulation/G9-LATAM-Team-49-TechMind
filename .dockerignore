@@ -1,0 +1,26 @@
+# Reduce el contexto de build. Importante en la VM de OCI, donde el disco y
+# la RAM van justos: sin esto se copian los notebooks (2.6 MB), el corpus y
+# node_modules en cada `docker build`.
+.git
+.github
+node_modules
+dist
+.astro
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+venv
+.venv
+notebooks/
+legacy_java_backend/
+docs/
+scripts/pipeline_notebook.py
+scripts/nbgen/
+chroma_db/
+models/*.joblib
+models/*.pkl
+models/*.pt
+*.log
+.env
+.DS_Store

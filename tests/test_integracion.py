@@ -2,15 +2,15 @@
 
 Es la prueba que habria detectado los bloqueantes #1 y #2 y el hallazgo N1.
 Usa dobles simples (no MagicMock) para no cargar modelos de GB, pero ejecuta
-todo el codigo de app.ml.core: validacion, idioma, limpieza, spaCy, keywords,
+todo el codigo de ml.core: validacion, idioma, limpieza, spaCy, keywords,
 clasificacion y serializacion.
 """
 import numpy as np
 import pytest
 import spacy
 
-from app.ml.core import CFG, ErrorValidacion, TechMindInference
-from app.schemas.contenido import ContenidoResponse
+from ml.core import CFG, ErrorValidacion, TechMindInference
+from schemas.contenido import ContenidoResponse
 
 TEXTO = ("Guia practica para containerizar una aplicacion Python con Docker y "
          "publicarla en Kubernetes mediante un pipeline de integracion continua.")

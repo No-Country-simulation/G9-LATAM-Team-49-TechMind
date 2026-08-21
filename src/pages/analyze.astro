@@ -12,7 +12,7 @@ import Header from '../components/Header.astro';
 
     <main class="flex-1 overflow-y-auto p-md md:p-xl bg-background">
       <div class="max-w-[1000px] mx-auto flex flex-col gap-xl">
-        
+
         <!-- Header -->
         <div class="mb-lg">
           <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-xs">Analiza tu contenido técnico</h2>
@@ -25,7 +25,7 @@ import Header from '../components/Header.astro';
             <form id="analyze-form" class="bg-surface-container-lowest border border-outline-variant rounded-DEFAULT flex flex-col relative focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
               <input type="text" id="content-title" required class="w-full p-md pb-0 bg-transparent border-none font-headline-md text-on-surface focus:ring-0 placeholder:text-on-surface-variant/50" placeholder="Título del documento (Obligatorio)" />
               <textarea id="content-text" required minlength="20" class="w-full h-[350px] p-md bg-transparent border-none resize-none font-body-md text-on-surface focus:ring-0 placeholder:text-on-surface-variant/50" placeholder="Pega tu contenido técnico aquí para analizarlo..."></textarea>
-              
+
               <div class="absolute bottom-0 left-0 right-0 p-3 bg-surface-container-lowest border-t border-outline-variant/50 flex justify-between items-center text-on-surface-variant font-label-sm text-label-sm">
                 <div class="flex gap-4">
                   <span id="char-count">0 caracteres</span>
@@ -36,6 +36,7 @@ import Header from '../components/Header.astro';
                 </button>
               </div>
             </form>
+            <p id="hint-primera" class="hidden font-body-sm text-body-sm text-on-surface-variant italic">El primer análisis carga los modelos en memoria y puede tardar algunos segundos.</p>
             <div id="error-message" class="hidden bg-error-container text-on-error-container p-md rounded-DEFAULT font-body-sm text-body-sm mt-2 border border-error/20"></div>
           </div>
 
@@ -50,14 +51,22 @@ import Header from '../components/Header.astro';
                 </label>
               </div>
             </div>
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-DEFAULT p-md">
+              <h4 class="font-label-md text-label-md text-on-surface mb-sm border-b border-outline-variant pb-xs">Ejemplos rápidos</h4>
+              <div class="flex flex-col gap-xs">
+                <button type="button" data-ejemplo="backend" class="text-left font-body-sm text-body-sm text-primary hover:underline">Introducción a Spring Boot</button>
+                <button type="button" data-ejemplo="devops" class="text-left font-body-sm text-body-sm text-primary hover:underline">Contenedores y CI/CD</button>
+                <button type="button" data-ejemplo="data" class="text-left font-body-sm text-body-sm text-primary hover:underline">Pipelines de datos con Pandas</button>
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- Resultados Section (Hidden initially) -->
         <div id="results-section" class="hidden flex-col gap-lg mt-xl border-t border-outline-variant pt-xl">
           <div class="flex flex-col gap-sm">
-            <h1 class="font-headline-lg text-headline-lg text-on-surface">Analysis Resultados</h1>
-            <p class="font-body-md text-body-md text-on-surface-variant max-w-[768px]">Comprehensive breakdown of text analysis, classification, and entity extraction.</p>
+            <h1 class="font-headline-lg text-headline-lg text-on-surface">Resultados del análisis</h1>
+            <p class="font-body-md text-body-md text-on-surface-variant max-w-[768px]">Desglose de la clasificación temática, las palabras clave extraídas y las entidades técnicas reconocidas.</p>
           </div>
 
           <div class="grid grid-cols-12 gap-lg">
@@ -69,31 +78,40 @@ import Header from '../components/Header.astro';
               </div>
               <div class="flex-1 flex flex-col justify-center gap-lg">
                 <div>
-                  <div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Primary Category</div>
+                  <div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Categoría principal</div>
                   <div id="res-category" class="font-display-lg text-display-lg text-on-surface break-words leading-tight">-</div>
                 </div>
                 <div>
                   <div class="flex justify-between items-end mb-xs">
-                    <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Confidence Score</span>
+                    <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Confianza</span>
                     <span id="res-score-text" class="font-headline-md text-headline-md text-primary">0%</span>
                   </div>
                   <div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
                     <div id="res-score-bar" class="h-full bg-primary rounded-full" style="width: 0%"></div>
                   </div>
                 </div>
+                <div>
+                  <div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Distribución</div>
+                  <div id="res-distribucion" class="flex flex-col gap-xs"></div>
+                </div>
               </div>
             </div>
 
-            <!-- Entities / Tópicos (Replacing BERTopic mock) -->
+            <!-- Entidades técnicas y tópico -->
             <div class="col-span-12 lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col gap-md">
               <div class="flex items-center justify-between border-b border-outline-variant/30 pb-sm">
                 <div class="flex items-center gap-sm">
                   <span class="material-symbols-outlined text-primary">schema</span>
-                  <h2 class="font-headline-md text-headline-md text-on-surface">Technical Entities</h2>
+                  <h2 class="font-headline-md text-headline-md text-on-surface">Entidades técnicas</h2>
                 </div>
+                <span id="res-idioma" class="font-label-sm text-label-sm text-on-surface-variant"></span>
               </div>
               <div id="res-entities" class="flex flex-wrap gap-sm">
-                <!-- Entities will be injected here -->
+                <!-- Entidades inyectadas aquí -->
+              </div>
+              <div class="border-t border-outline-variant/30 pt-sm mt-auto">
+                <div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Tópico detectado</div>
+                <div id="res-tema" class="font-body-lg text-body-lg text-on-surface">-</div>
               </div>
             </div>
 
@@ -101,13 +119,22 @@ import Header from '../components/Header.astro';
             <div class="col-span-12 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col gap-md">
               <div class="flex items-center gap-sm border-b border-outline-variant/30 pb-sm">
                 <span class="material-symbols-outlined text-primary">label</span>
-                <h2 class="font-headline-md text-headline-md text-on-surface">Palabras Clave Extraídas</h2>
+                <h2 class="font-headline-md text-headline-md text-on-surface">Palabras clave extraídas</h2>
               </div>
               <div id="res-keywords" class="flex flex-wrap gap-sm">
-                <!-- Palabras Clave injected here -->
+                <!-- Palabras clave inyectadas aquí -->
               </div>
             </div>
-            
+
+            <!-- Advertencias -->
+            <div id="res-advertencias-wrap" class="hidden col-span-12 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex-col gap-sm">
+              <div class="flex items-center gap-sm border-b border-outline-variant/30 pb-sm">
+                <span class="material-symbols-outlined text-primary">warning</span>
+                <h2 class="font-headline-md text-headline-md text-on-surface">Advertencias</h2>
+              </div>
+              <ul id="res-advertencias" class="list-disc pl-5 font-body-sm text-body-sm text-on-surface-variant"></ul>
+            </div>
+
           </div>
         </div>
 
@@ -120,93 +147,204 @@ import Header from '../components/Header.astro';
   import { processContent } from '../services/api';
 
   const form = document.getElementById('analyze-form') as HTMLFormElement;
-  const titleEntrada = document.getElementById('content-title') as HTMLEntradaElement;
-  const textEntrada = document.getElementById('content-text') as HTMLTextAreaElement;
-  const keywordsEntrada = document.getElementById('n-keywords') as HTMLEntradaElement;
+  const tituloInput = document.getElementById('content-title') as HTMLInputElement;
+  const textoInput = document.getElementById('content-text') as HTMLTextAreaElement;
+  const keywordsInput = document.getElementById('n-keywords') as HTMLInputElement;
   const charCount = document.getElementById('char-count');
   const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
   const loadingSpinner = document.getElementById('loading-spinner');
   const btnText = submitBtn.querySelector('.btn-text');
   const errorMsg = document.getElementById('error-message');
+  const hintPrimera = document.getElementById('hint-primera');
   const resultsSection = document.getElementById('results-section');
 
-  // Update char count
-  textEntrada.addEventListener('input', () => {
-    if (charCount) charCount.textContent = `${textEntrada.value.length} caracteres`;
+  let esPrimerAnalisis = true;
+
+  const EJEMPLOS: Record<string, { titulo: string; texto: string }> = {
+    backend: {
+      titulo: 'Introducción a Spring Boot',
+      texto: 'En este contenido se presentan los conceptos básicos para la creación de APIs REST utilizando Java y Spring Boot, incluyendo inyección de dependencias, controladores, validación de peticiones y manejo centralizado de errores.',
+    },
+    devops: {
+      titulo: 'Contenedores y CI/CD',
+      texto: 'Guía práctica para containerizar una aplicación con Docker y publicarla en Kubernetes mediante un pipeline de integración continua, cubriendo la construcción de imágenes, el registro de contenedores y las estrategias de despliegue progresivo.',
+    },
+    data: {
+      titulo: 'Pipelines de datos con Pandas',
+      texto: 'Este material explica cómo construir pipelines de limpieza y transformación de datos tabulares con Pandas y NumPy, tratando valores nulos, tipos de columna, agregaciones y la posterior serialización del conjunto de datos procesado.',
+    },
+  };
+
+  document.querySelectorAll<HTMLButtonElement>('[data-ejemplo]').forEach((boton) => {
+    boton.addEventListener('click', () => {
+      const ejemplo = EJEMPLOS[boton.dataset.ejemplo ?? ''];
+      if (!ejemplo) return;
+      tituloInput.value = ejemplo.titulo;
+      textoInput.value = ejemplo.texto;
+      if (charCount) charCount.textContent = `${textoInput.value.length} caracteres`;
+    });
   });
+
+  // Contador de caracteres
+  textoInput.addEventListener('input', () => {
+    if (charCount) charCount.textContent = `${textoInput.value.length} caracteres`;
+  });
+
+  /** Crea una etiqueta (chip) con las clases indicadas. */
+  function chip(texto: string, clases: string): HTMLSpanElement {
+    const span = document.createElement('span');
+    span.className = clases;
+    span.textContent = texto;
+    return span;
+  }
+
+  const CLASES_ENTIDAD =
+    'font-label-sm text-label-sm text-on-surface-variant bg-surface-variant px-3 py-1.5 rounded-sm border border-outline-variant/20';
+  const CLASES_KEYWORD =
+    'font-label-sm text-label-sm bg-primary-fixed/20 text-on-primary-container px-3 py-1.5 rounded-sm border border-primary-fixed';
+
+  /**
+   * Normaliza una palabra clave.
+   * La API devuelve `informacion_adicional` como lista de cadenas, pero se
+   * admite también el formato {keyword, score} por compatibilidad.
+   */
+  function textoKeyword(kw: unknown): string {
+    if (typeof kw === 'string') return kw;
+    if (kw && typeof kw === 'object') {
+      const obj = kw as Record<string, unknown>;
+      if (typeof obj.keyword === 'string') return obj.keyword;
+      if (Array.isArray(kw) && typeof kw[0] === 'string') return kw[0];
+    }
+    return String(kw);
+  }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
-    // UI state: loading
+
+    // Estado de la UI: cargando
     submitBtn.disabled = true;
     loadingSpinner?.classList.remove('hidden');
-    if (btnText) btnText.textContent = 'Processing...';
+    if (btnText) btnText.textContent = 'Procesando...';
     errorMsg?.classList.add('hidden');
     resultsSection?.classList.add('hidden');
+    if (esPrimerAnalisis) hintPrimera?.classList.remove('hidden');
 
     try {
       const payload = {
-        titulo: titleEntrada.value,
-        texto: textEntrada.value,
-        n_keywords: parseInt(keywordsEntrada.value) || 5
+        titulo: tituloInput.value,
+        texto: textoInput.value,
+        n_keywords: parseInt(keywordsInput.value) || 5,
       };
 
       const result = await processContent(payload);
+      esPrimerAnalisis = false;
+      hintPrimera?.classList.add('hidden');
 
-      // Populate results
       const catEl = document.getElementById('res-category');
       const scoreTxt = document.getElementById('res-score-text');
-      const scoreBar = document.getElementById('res-score-bar');
+      const scoreBar = document.getElementById('res-score-bar') as HTMLElement | null;
+      const distEl = document.getElementById('res-distribucion');
       const entitiesEl = document.getElementById('res-entities');
       const keywordsEl = document.getElementById('res-keywords');
+      const temaEl = document.getElementById('res-tema');
+      const idiomaEl = document.getElementById('res-idioma');
+      const advWrap = document.getElementById('res-advertencias-wrap');
+      const advEl = document.getElementById('res-advertencias');
 
-      if (catEl) catEl.textContent = result.categoria || 'Unknown';
-      
-      const prob = (result.probabilidad * 100).toFixed(1);
+      // --- Categoría y confianza ---
+      if (catEl) catEl.textContent = result.categoria || 'Sin categoría';
+
+      const prob = ((result.probabilidad ?? 0) * 100).toFixed(1);
       if (scoreTxt) scoreTxt.textContent = `${prob}%`;
       if (scoreBar) scoreBar.style.width = `${prob}%`;
 
+      // --- Distribución de categorías ---
+      if (distEl) {
+        distEl.innerHTML = '';
+        const dist = result.distribucion_categorias ?? {};
+        const entradas = Object.entries(dist) as [string, number][];
+        if (entradas.length > 0) {
+          entradas.forEach(([cat, p]) => {
+            const fila = document.createElement('div');
+            fila.className = 'flex justify-between font-body-sm text-body-sm text-on-surface-variant';
+            const nombre = document.createElement('span');
+            nombre.textContent = cat;
+            const valor = document.createElement('span');
+            valor.textContent = `${(p * 100).toFixed(1)}%`;
+            fila.append(nombre, valor);
+            distEl.appendChild(fila);
+          });
+        } else {
+          distEl.textContent = '—';
+        }
+      }
+
+      // --- Entidades técnicas ---
       if (entitiesEl) {
         entitiesEl.innerHTML = '';
-        if (result.entidades_tecnicas && result.entidades_tecnicas.length > 0) {
-          result.entidades_tecnicas.forEach(ent => {
-            const span = document.createElement('span');
-            span.className = 'font-label-sm text-label-sm text-on-surface-variant bg-surface-variant px-3 py-1.5 rounded-sm border border-outline-variant/20';
-            span.textContent = ent;
-            entitiesEl.appendChild(span);
-          });
+        const entidades = result.entidades_tecnicas ?? [];
+        if (entidades.length > 0) {
+          entidades.forEach((ent) => entitiesEl.appendChild(chip(String(ent), CLASES_ENTIDAD)));
         } else {
-          entitiesEl.textContent = 'No technical entities detected.';
+          entitiesEl.textContent = 'No se detectaron entidades técnicas.';
         }
       }
 
+      // --- Palabras clave ---
+      // CORREGIDO: las palabras clave viven en `informacion_adicional`
+      // (contrato del brief). Antes se leían de `result.tema.keywords`,
+      // un campo que la API nunca devuelve, así que este panel mostraba
+      // siempre "No keywords extracted".
       if (keywordsEl) {
         keywordsEl.innerHTML = '';
-        if (result.tema && result.tema.keywords) {
-          result.tema.keywords.forEach((kw: string) => {
-            const span = document.createElement('span');
-            span.className = 'font-label-sm text-label-sm text-on-surface-variant bg-primary-fixed/20 text-on-primary-container px-3 py-1.5 rounded-sm border border-primary-fixed';
-            span.textContent = kw;
-            keywordsEl.appendChild(span);
-          });
+        const kws = result.informacion_adicional ?? [];
+        if (kws.length > 0) {
+          kws.forEach((kw) => keywordsEl.appendChild(chip(textoKeyword(kw), CLASES_KEYWORD)));
         } else {
-          keywordsEl.textContent = 'No keywords extracted.';
+          keywordsEl.textContent = 'No se extrajeron palabras clave.';
         }
       }
 
-      // Show results
+      // --- Tópico e idioma ---
+      if (temaEl) {
+        const tema = result.tema ?? {};
+        temaEl.textContent = tema.etiqueta ? `${tema.etiqueta} (id ${tema.id})` : 'Sin tópico definido';
+      }
+      if (idiomaEl) {
+        const idioma = result.idioma ?? {};
+        idiomaEl.textContent = idioma.codigo ? `Idioma: ${String(idioma.codigo).toUpperCase()}` : '';
+      }
+
+      // --- Advertencias ---
+      if (advWrap && advEl) {
+        advEl.innerHTML = '';
+        const advertencias = result.advertencias ?? [];
+        if (advertencias.length > 0) {
+          advertencias.forEach((a: any) => {
+            const li = document.createElement('li');
+            li.textContent = a?.mensaje ?? JSON.stringify(a);
+            advEl.appendChild(li);
+          });
+          advWrap.classList.remove('hidden');
+          advWrap.classList.add('flex');
+        } else {
+          advWrap.classList.add('hidden');
+          advWrap.classList.remove('flex');
+        }
+      }
+
+      // Mostrar resultados
       resultsSection?.classList.remove('hidden');
       resultsSection?.classList.add('flex');
       resultsSection?.scrollIntoView({ behavior: 'smooth' });
 
     } catch (err: any) {
+      hintPrimera?.classList.add('hidden');
       if (errorMsg) {
         errorMsg.textContent = `Error: ${err.message}`;
         errorMsg.classList.remove('hidden');
       }
     } finally {
-      // Reset UI state
       submitBtn.disabled = false;
       loadingSpinner?.classList.add('hidden');
       if (btnText) btnText.textContent = 'Analizar Contenido';
