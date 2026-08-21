@@ -10,21 +10,20 @@ services:
     volumes:
       - ./models:/app/models
       - ./chroma_db:/app/chroma_db
-      # Cache de HuggingFace: evita volver a descargar el modelo de
-      # embeddings en cada reconstruccion del contenedor.
-      - hf_cache:/root/.cache/huggingface
     env_file:
       - .env
     environment:
       - PORT=8000
       - PRECARGAR_MODELOS=${PRECARGAR_MODELOS:-1}
       - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:4321}
+      - APP_ROOT=/app
       - MODELS_DIR=/app/models
       # Integracion con OCI Object Storage (ver .env)
       - OCI_PAR_URL=${OCI_PAR_URL:-}
       - OCI_NAMESPACE=${OCI_NAMESPACE:-}
       - OCI_BUCKET=${OCI_BUCKET:-}
       - OCI_PREFIX=${OCI_PREFIX:-}
+      - HF_HOME=/opt/hf
     healthcheck:
       test: ["CMD-SHELL", "python -c \"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health', timeout=5).status==200 else 1)\""]
       interval: 30s
@@ -45,6 +44,3 @@ services:
     restart: unless-stopped
     depends_on:
       - api
-
-volumes:
-  hf_cache:
