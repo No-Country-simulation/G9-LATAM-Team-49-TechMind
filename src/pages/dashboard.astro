@@ -10,52 +10,280 @@ import Header from '../components/Header.astro';
     <Header />
     <main class="flex-1 overflow-y-auto p-md lg:p-lg">
       <div class="max-w-container-max mx-auto space-y-lg">
+
+        <div>
+          <h1 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Panel de control</h1>
+          <p class="font-body-md text-body-md text-on-surface-variant max-w-[720px]">
+            Estado del modelo en producción y métricas del entrenamiento que lo generó.
+            Los valores se leen del contrato de versionado del modelo, no están escritos a mano.
+          </p>
+        </div>
+
+        <!-- Fila de indicadores. Son cifras únicas: un número grande comunica
+             mejor que un gráfico, así que no se dibuja ninguno. -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md">
-          <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md hover:bg-surface-container-low transition-colors duration-200">
+
+          <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md">
             <div class="flex justify-between items-start mb-sm">
-              <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Contenidos Analizados</span>
+              <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Documentos del corpus</span>
               <span class="material-symbols-outlined text-outline">description</span>
             </div>
-            <div class="font-display-lg text-display-lg text-on-surface">-</div>
-            <div class="mt-xs flex items-center gap-xs font-label-sm text-label-sm text-on-surface-variant">
-              <span>Datos no disponibles en la API</span>
+            <div id="kpi-documentos" class="font-display-lg text-display-lg text-on-surface">—</div>
+            <div class="mt-xs font-label-sm text-label-sm text-on-surface-variant">
+              Base de conocimiento indexada
             </div>
           </div>
-          <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md hover:bg-surface-container-low transition-colors duration-200">
+
+          <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md">
             <div class="flex justify-between items-start mb-sm">
-              <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Tópicos Detectados</span>
+              <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Categorías</span>
               <span class="material-symbols-outlined text-outline">category</span>
             </div>
-            <div class="font-display-lg text-display-lg text-on-surface">-</div>
-            <div class="mt-xs flex items-center gap-xs font-label-sm text-label-sm text-on-surface-variant">
-              <span>Datos no disponibles en la API</span>
+            <div id="kpi-categorias" class="font-display-lg text-display-lg text-on-surface">—</div>
+            <div class="mt-xs font-label-sm text-label-sm text-on-surface-variant">
+              Taxonomía de clasificación
             </div>
           </div>
-          <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md hover:bg-surface-container-low transition-colors duration-200">
+
+          <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md">
             <div class="flex justify-between items-start mb-sm">
-              <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Palabras Clave Extraídas</span>
-              <span class="material-symbols-outlined text-outline">key</span>
+              <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Tópicos</span>
+              <span class="material-symbols-outlined text-outline">hub</span>
             </div>
-            <div class="font-display-lg text-display-lg text-on-surface">-</div>
-            <div class="mt-xs flex items-center gap-xs font-label-sm text-label-sm text-on-surface-variant">
-              <span>Datos no disponibles en la API</span>
+            <div id="kpi-topicos" class="font-display-lg text-display-lg text-on-surface">—</div>
+            <div class="mt-xs font-label-sm text-label-sm text-on-surface-variant">
+              Descubiertos por BERTopic, sin etiquetar
             </div>
           </div>
-          <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md hover:bg-surface-container-low transition-colors duration-200">
+
+          <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md">
             <div class="flex justify-between items-start mb-sm">
-              <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Confianza Promedio</span>
+              <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">F1-macro</span>
               <span class="material-symbols-outlined text-outline">query_stats</span>
             </div>
-            <div class="font-display-lg text-display-lg text-on-surface">-</div>
-            <div class="mt-xs flex items-center gap-xs font-label-sm text-label-sm text-on-surface-variant">
-              <span>Datos no disponibles en la API</span>
+            <div id="kpi-f1" class="font-display-lg text-display-lg text-on-surface">—</div>
+            <div id="kpi-f1-nota" class="mt-xs font-label-sm text-label-sm text-on-surface-variant">
+              Sobre el conjunto de test
             </div>
           </div>
+
         </div>
+
+        <!-- Estado del sistema. Cada indicador lleva icono Y texto: el color
+             nunca es el único portador de la información. -->
         <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md lg:p-lg flex flex-col gap-md">
-           <p class="font-body-md text-on-surface-variant text-center my-xl">The global statistics dashboard requires additional backend endpoints to aggregate data over time. Currently, TechMind processes single analysis requests.</p>
+          <div class="flex items-center gap-sm border-b border-outline-variant/30 pb-sm">
+            <span class="material-symbols-outlined text-primary">monitor_heart</span>
+            <h2 class="font-headline-md text-headline-md text-on-surface">Estado del sistema</h2>
+          </div>
+          <div id="estado-lista" class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+            <div class="font-body-sm text-body-sm text-on-surface-variant">Consultando…</div>
+          </div>
         </div>
+
+        <!-- Ficha técnica -->
+        <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md lg:p-lg flex flex-col gap-md">
+          <div class="flex items-center gap-sm border-b border-outline-variant/30 pb-sm">
+            <span class="material-symbols-outlined text-primary">fact_check</span>
+            <h2 class="font-headline-md text-headline-md text-on-surface">Ficha técnica del modelo</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full font-body-sm text-body-sm">
+              <tbody id="ficha-tecnica" class="text-on-surface-variant">
+                <tr><td class="py-xs">Cargando…</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="font-label-sm text-label-sm text-on-surface-variant/70">
+            Procedente de <code>models/metadata.json</code>, el contrato de versionado
+            entre el equipo de Ciencia de Datos y el backend.
+          </p>
+        </div>
+
       </div>
     </main>
   </div>
 </Layout>
+
+<script>
+  // El panel no inventa datos. Lee dos fuentes reales:
+  //   /health         → estado vivo del servicio y de los artefactos cargados
+  //   /metadata.json  → contrato de versionado que produce el entrenamiento
+  //
+  // metadata.json se publica como fichero estático copiándolo a public/ antes
+  // del build (ver docs). Así el panel no necesita endpoints nuevos en la API.
+
+  const BASE = import.meta.env.PUBLIC_API_URL ?? '';
+
+  /** Busca la primera clave que exista, a cualquier profundidad del objeto. */
+  function buscar(obj: any, ...claves: string[]): any {
+    if (obj === null || typeof obj !== 'object') return undefined;
+    for (const clave of claves) {
+      if (obj[clave] !== undefined && obj[clave] !== null) return obj[clave];
+    }
+    for (const valor of Object.values(obj)) {
+      const hallado = buscar(valor, ...claves);
+      if (hallado !== undefined) return hallado;
+    }
+    return undefined;
+  }
+
+  function texto(id: string, valor: any) {
+    const el = document.getElementById(id);
+    if (el && valor !== undefined && valor !== null && valor !== '') {
+      el.textContent = String(valor);
+    }
+  }
+
+  /** Fila de estado: icono + etiqueta + veredicto. Nunca solo color. */
+  function filaEstado(etiqueta: string, ok: boolean, detalle: string) {
+    const fila = document.createElement('div');
+    fila.className = 'flex items-center gap-sm font-body-sm text-body-sm';
+
+    const icono = document.createElement('span');
+    icono.className = `material-symbols-outlined text-[20px] ${ok ? 'text-primary' : 'text-error'}`;
+    icono.textContent = ok ? 'check_circle' : 'cancel';
+
+    const txt = document.createElement('span');
+    txt.className = 'text-on-surface';
+    txt.textContent = etiqueta;
+
+    const det = document.createElement('span');
+    det.className = 'text-on-surface-variant ml-auto';
+    det.textContent = detalle;
+
+    fila.append(icono, txt, det);
+    return fila;
+  }
+
+  async function cargar() {
+    // --- Estado del servicio ---
+    const lista = document.getElementById('estado-lista');
+    let salud: any = null;
+    try {
+      const r = await fetch(`${BASE}/health`);
+      salud = await r.json();
+    } catch {
+      /* servicio inalcanzable */
+    }
+
+    if (lista) {
+      lista.innerHTML = '';
+      const modelo = salud?.modelo ?? {};
+      const cargado = modelo.cargado === true;
+      const faltantes = Array.isArray(modelo.faltantes) ? modelo.faltantes : [];
+
+      lista.appendChild(filaEstado(
+        'API',
+        salud?.status === 'ok',
+        salud ? (salud.status ?? 'desconocido') : 'sin respuesta'));
+
+      lista.appendChild(filaEstado(
+        'Modelo de clasificación',
+        cargado,
+        cargado ? 'cargado' : 'no disponible'));
+
+      lista.appendChild(filaEstado(
+        'Artefactos',
+        faltantes.length === 0,
+        faltantes.length === 0 ? 'completos' : `faltan ${faltantes.length}`));
+
+      const topicos = buscar(modelo, 'topicos');
+      const recomendaciones = buscar(modelo, 'recomendaciones');
+      if (topicos !== undefined) {
+        lista.appendChild(filaEstado('Modelado de tópicos', topicos === true,
+          topicos ? 'activo' : 'inactivo'));
+      }
+      if (recomendaciones !== undefined) {
+        lista.appendChild(filaEstado('Búsqueda semántica', recomendaciones === true,
+          recomendaciones ? 'activa' : 'inactiva'));
+      }
+    }
+
+    // --- Métricas del entrenamiento ---
+    let meta: any = null;
+    try {
+      const r = await fetch(`${BASE}/metadata.json`);
+      if (r.ok) meta = await r.json();
+    } catch {
+      /* fichero no publicado */
+    }
+
+    const ficha = document.getElementById('ficha-tecnica');
+
+    if (!meta) {
+      if (ficha) {
+        ficha.innerHTML = '';
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.className = 'py-xs text-on-surface-variant';
+        td.textContent = 'metadata.json no está publicado. Cópialo a public/ y reconstruye el frontend.';
+        tr.appendChild(td);
+        ficha.appendChild(tr);
+      }
+      return;
+    }
+
+    // Los nombres exactos varían según la versión del pipeline: se buscan
+    // varias variantes en vez de asumir una sola estructura.
+    const documentos = buscar(meta, 'documentos', 'n_documentos', 'total_documentos');
+    const categorias = buscar(meta, 'categorias', 'n_categorias', 'clases');
+    const topicos = buscar(meta, 'n_topicos', 'topicos', 'num_topicos');
+    const f1 = buscar(meta, 'f1_macro', 'f1_macro_test', 'f1');
+    const f1cv = buscar(meta, 'f1_macro_cv', 'f1_cv');
+    const desviacion = buscar(meta, 'f1_macro_cv_std', 'std', 'desviacion');
+
+    texto('kpi-documentos', documentos);
+    texto('kpi-categorias', Array.isArray(categorias) ? categorias.length : categorias);
+    texto('kpi-topicos', topicos);
+    if (typeof f1 === 'number') texto('kpi-f1', f1.toFixed(3));
+
+    if (typeof f1cv === 'number') {
+      const nota = typeof desviacion === 'number'
+        ? `Validación cruzada: ${f1cv.toFixed(3)} ± ${desviacion.toFixed(3)}`
+        : `Validación cruzada: ${f1cv.toFixed(3)}`;
+      texto('kpi-f1-nota', nota);
+    }
+
+    // --- Ficha técnica ---
+    if (ficha) {
+      ficha.innerHTML = '';
+      const filas: [string, any][] = [
+        ['Versión del modelo', buscar(meta, 'version', 'version_modelo')],
+        ['Fecha de entrenamiento', buscar(meta, 'fecha_entrenamiento', 'fecha', 'timestamp')],
+        ['Clasificador', buscar(meta, 'tipo_clasificador', 'modelo_clasificacion')],
+        ['Modelo de embeddings', buscar(meta, 'modelo_embeddings')],
+        ['Pipeline lingüístico', buscar(meta, 'modelo_spacy')],
+        ['Huella del dataset', buscar(meta, 'dataset_hash', 'hash_dataset')],
+      ];
+
+      filas.forEach(([etiqueta, valor]) => {
+        if (valor === undefined || valor === null || valor === '') return;
+        const tr = document.createElement('tr');
+        tr.className = 'border-b border-outline-variant/20 last:border-0';
+
+        const th = document.createElement('td');
+        th.className = 'py-sm pr-md text-on-surface-variant whitespace-nowrap';
+        th.textContent = etiqueta;
+
+        const td = document.createElement('td');
+        td.className = 'py-sm text-on-surface font-mono text-[13px] break-all';
+        td.textContent = String(valor);
+
+        tr.append(th, td);
+        ficha.appendChild(tr);
+      });
+
+      if (!ficha.hasChildNodes()) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.className = 'py-xs text-on-surface-variant';
+        td.textContent = 'Sin campos reconocibles en metadata.json.';
+        tr.appendChild(td);
+        ficha.appendChild(tr);
+      }
+    }
+  }
+
+  cargar();
+</script>

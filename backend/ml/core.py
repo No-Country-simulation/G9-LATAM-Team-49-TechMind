@@ -877,6 +877,11 @@ TECNOLOGIAS = [
     "HTTPS", "TLS", "SSL", "WebSocket", "HTTP", "SOAP", "OpenAPI", "Swagger",
     # Móvil
     "Android", "iOS", "Flutter", "Xamarin", "Ionic",
+    # Sistemas operativos e infraestructura de sistema
+    "Linux", "Ubuntu", "Debian", "CentOS", "Red Hat", "Fedora", "Alpine",
+    "Windows", "Windows Server", "macOS", "Unix", "WSL",
+    "Bash", "Shell", "PowerShell", "systemd", "cron", "SSH", "Firewall",
+    "VirtualBox", "VMware", "Podman", "máquina virtual",
     # Conceptos
     "machine learning", "deep learning", "microservicios", "aprendizaje automático",
     "redes neuronales", "computación en la nube", "arquitectura hexagonal",
