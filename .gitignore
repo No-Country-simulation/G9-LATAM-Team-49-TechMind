@@ -73,3 +73,13 @@ id_rsa*
 id_ed25519*
 *.bundle
 *.patch
+
+# Paquete del modelo y documentos de trabajo
+dist_modelo/
+LEEME.txt
+vm*.bundle
+*.patch
+
+CORRECCIONES_RONDA_2.md
+ESTADO_FINAL_TECHMIND.md
+PLAN_DE_ACCION_TECHMIND.md
